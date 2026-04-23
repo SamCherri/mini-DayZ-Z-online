@@ -3,17 +3,12 @@
 Orquestra casos de uso, coordenando domínio e infraestrutura.
 
 ## Implementação atual
-- `src/application/multiplayer/message-mapper.js`
-  - traduz mensagens de rede para eventos de domínio de turno.
-- `src/application/multiplayer/turn-event-queue.js`
-  - mantém fila FIFO para processamento ordenado dos eventos de turno.
-- `src/application/multiplayer/session-client.js`
-  - encapsula fluxo de sessão multiplayer (`join_room`, `move`, estado do jogador).
-  - depende de `transport` injetado e publica eventos de turno opcionalmente.
-  - valida ação de movimento através da camada de domínio.
+- `multiplayer/protocol/v1/messages.js` (contrato v1)
+- `multiplayer/message-mapper.js` (rede -> eventos de domínio)
+- `multiplayer/turn-event-queue.js` (fila FIFO)
+- `multiplayer/command-handler.js` (aplicação de comandos via domínio)
+- `multiplayer/turn-orchestrator.js` (fluxo de turno)
+- `multiplayer/session-client.js` (sessão multiplayer)
 
-## Exemplos de casos de uso futuros
-- EntrarEmCena
-- InteragirComNPC
-- RegistrarAcaoSocial
-- SincronizarEstadoMultiplayer
+## Diretriz
+Toda decisão de fluxo passa pela aplicação; apresentação apenas dispara comandos e renderiza resultados.

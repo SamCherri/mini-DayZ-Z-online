@@ -5,22 +5,24 @@ window.MDZApp.mapNetworkMessageToTurnEvent = function mapNetworkMessageToTurnEve
     throw new Error("MDZDomain não disponível");
   }
 
-  if (message.type === "joined") {
+  const normalized = message?.payload?.type ? message.payload : message;
+
+  if (normalized.type === "joined") {
     return window.MDZDomain.createPlayerJoinedEvent({
-      playerId: message.playerId,
-      roomId: message.roomId,
+      playerId: normalized.playerId,
+      roomId: normalized.roomId,
     });
   }
 
-  if (message.type === "state_update") {
+  if (normalized.type === "state_update") {
     return window.MDZDomain.createStateUpdatedEvent({
-      state: message,
+      state: normalized.state || normalized,
     });
   }
 
-  if (message.type === "error") {
+  if (normalized.type === "error") {
     return window.MDZDomain.createErrorReceivedEvent({
-      message: message.message,
+      message: normalized.message,
     });
   }
 

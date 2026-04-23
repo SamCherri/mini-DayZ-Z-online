@@ -18,16 +18,32 @@ window.MDZNet = (() => {
       throw new Error("MDZInfra.createWebSocketTransport não disponível");
     }
 
+    if (!window.MDZInfra?.createReliableWsTransport) {
+      throw new Error("MDZInfra.createReliableWsTransport não disponível");
+    }
+
+    if (!window.MDZInfra?.createLogger) {
+      throw new Error("MDZInfra.createLogger não disponível");
+    }
+
     if (!window.MDZApp?.createNetClient) {
       throw new Error("MDZApp.createNetClient não disponível");
     }
 
     const wsUrl = resolveWsUrl();
-    const transport = window.MDZInfra.createWebSocketTransport(wsUrl);
+    const logger = window.MDZInfra.createLogger({ correlationId: `mdz_${Date.now()}` });
+    const baseTransport = window.MDZInfra.createWebSocketTransport(wsUrl);
+    const reliableTransport = window.MDZInfra.createReliableWsTransport({
+      baseTransport,
+      logger,
+      retries: 3,
+      retryDelayMs: 350,
+    });
 
     return window.MDZApp.createNetClient({
       roomId: "default",
-      transport,
+      transport: reliableTransport,
+      logger,
     });
   }
 

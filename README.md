@@ -2,56 +2,50 @@
 
 ## Estado atual
 
-Preparação inicial para evolução do mod roleplay com foco em mudanças pequenas e seguras sobre base legada exportada.
+Base incremental do game mode com separação por camadas, bridge legado e preparação para multiplayer confiável.
 
-## Documentação
+## Componentes principais
 
-- Preparação macro: `docs/preparacao-mod-roleplay.md`
-- Auditoria fase 1 (shell web): `docs/auditoria-fase-1.md`
+### Domínio
+- `src/domain/multiplayer/turn-events.js`
+- `src/domain/multiplayer/turn-action.js`
+- `src/domain/multiplayer/turn-rules.js`
+- `src/domain/rp/reputation.js`
+- `src/domain/rp/interaction-scene.js`
 
-## Ferramentas de auditoria
+### Aplicação
+- `src/application/multiplayer/protocol/v1/messages.js`
+- `src/application/multiplayer/command-handler.js`
+- `src/application/multiplayer/turn-orchestrator.js`
+- `src/application/multiplayer/session-client.js`
 
-Inventário do pacote ZIP:
+### Infraestrutura
+- `src/infrastructure/websocket/ws-transport.js`
+- `src/infrastructure/websocket/reliable-ws-transport.js`
+- `src/infrastructure/observability/logger.js`
+- `src/infrastructure/persistence/prisma-client.ts`
+- `prisma/schema.prisma`
+
+### Apresentação/Bridge legado
+- `legacy-shell/index.html`
+- `legacy-shell/net-client.js`
+- `legacy-shell/runtime-config.js`
+- `legacy-shell/zoom.js`
+
+## Auditoria e operação
+- `docs/preparacao-mod-roleplay.md`
+- `docs/auditoria-fase-1.md`
+- `docs/operacao-multiplayer.md`
+
+## Ferramentas
 
 ```bash
 python tools/inventory_zip.py "Mini DayZ rpg.zip"
-```
-
-Extração de shell legado (index/net-client/zoom) para análise versionada:
-
-```bash
 python tools/extract_legacy_shell.py "Mini DayZ rpg.zip" --output-dir legacy-shell
 ```
 
-## Configuração de websocket (infraestrutura)
+## Testes
 
-O shell legado resolve URL websocket sem hardcode:
-
-1. `window.__MDZ_RUNTIME_CONFIG__.wsUrl`
-2. `localStorage["MDZ_WS_URL"]`
-3. fallback por `window.location` (`ws(s)://<host>/ws`)
-
-Exemplo de injeção antes de carregar `net-client.js`:
-
-```html
-<script>
-  window.__MDZ_RUNTIME_CONFIG__ = {
-    wsUrl: "wss://seu-dominio-railway/ws"
-  };
-</script>
+```bash
+node --test tests/*.test.mjs
 ```
-
-## Estrutura incremental (clean architecture)
-
-- `src/domain/`
-  - `multiplayer/turn-events.js`
-  - `multiplayer/turn-action.js`
-- `src/application/`
-  - `multiplayer/message-mapper.js`
-  - `multiplayer/turn-event-queue.js`
-  - `multiplayer/session-client.js`
-- `src/infrastructure/`
-  - `websocket/ws-transport.js`
-- `src/presentation/`
-
-`legacy-shell/net-client.js` permanece apenas como ponte de compatibilidade para o runtime legado.

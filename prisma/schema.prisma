@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MatchRoom {
+  id         String      @id @default(cuid())
+  roomCode   String      @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  turns      TurnState[]
+  events     TurnEvent[]
+  sessions   PlayerSession[]
+}
+
+model PlayerSession {
+  id         String   @id @default(cuid())
+  playerId   String
+  roomId     String
+  connected  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  room       MatchRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, playerId])
+}
+
+model TurnState {
+  id          String   @id @default(cuid())
+  roomId      String
+  turnNumber  Int
+  stateJson   String
+  createdAt   DateTime @default(now())
+  room        MatchRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, turnNumber])
+}
+
+model TurnEvent {
+  id         String   @id @default(cuid())
+  roomId     String
+  turnNumber Int
+  eventType  String
+  payload    String
+  createdAt  DateTime @default(now())
+  room       MatchRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, turnNumber])
+}
