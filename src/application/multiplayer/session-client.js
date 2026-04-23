@@ -3,12 +3,24 @@ window.MDZApp = window.MDZApp || {};
 window.MDZApp.createNetClient = function createNetClient(options) {
   const roomId = options.roomId || "default";
   const transport = options.transport;
+  const onTurnEvent = typeof options.onTurnEvent === "function" ? options.onTurnEvent : null;
 
   let playerId = null;
   let latestState = { players: [] };
 
+  function publishTurnEvent(event) {
+    if (event && onTurnEvent) {
+      onTurnEvent(event);
+    }
+  }
+
   function handleIncoming(rawData) {
     const msg = JSON.parse(rawData);
+
+    const mappedEvent = window.MDZApp.mapNetworkMessageToTurnEvent
+      ? window.MDZApp.mapNetworkMessageToTurnEvent(msg)
+      : null;
+    publishTurnEvent(mappedEvent);
 
     if (msg.type === "joined") {
       playerId = msg.playerId;

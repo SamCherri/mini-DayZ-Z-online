@@ -7,6 +7,10 @@ Responsável por regras centrais do modo roleplay.
 - Entidades e regras puras.
 - Preparado para multiplayer futuro (consistência de estado e eventos de domínio).
 
+## Implementação atual
+- `src/domain/multiplayer/turn-events.js`
+  - define tipos de eventos de turno para multiplayer.
+
 ## Próximas entidades
 - PersonagemRP
 - Reputacao

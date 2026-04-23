@@ -44,7 +44,9 @@ Exemplo de injeção antes de carregar `net-client.js`:
 ## Estrutura incremental (clean architecture)
 
 - `src/domain/`
+  - `multiplayer/turn-events.js`
 - `src/application/`
+  - `multiplayer/message-mapper.js`
   - `multiplayer/session-client.js`
 - `src/infrastructure/`
   - `websocket/ws-transport.js`

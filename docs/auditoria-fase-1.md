@@ -18,7 +18,9 @@ Também acopla scripts adicionais:
 
 - `zoom.js` (controle de zoom visual)
 - `runtime-config.js` (configuração de infraestrutura)
+- `turn-events.js` (domínio)
 - `ws-transport.js` (infraestrutura de transporte)
+- `message-mapper.js` (aplicação)
 - `session-client.js` (aplicação)
 - `net-client.js` (fachada de compatibilidade)
 
@@ -35,6 +37,8 @@ Status após ajuste incremental:
 - fallback para `localStorage` (`MDZ_WS_URL`);
 - fallback final derivado de `window.location` (`/ws`), compatível com Railway;
 - protocolo de sessão ficou na camada de aplicação (`session-client.js`);
+- mapeamento de mensagem de rede para evento de turno ficou em `message-mapper.js`;
+- eventos de turno foram formalizados na camada de domínio (`turn-events.js`);
 - transporte websocket ficou na infraestrutura (`ws-transport.js`).
 
 ### 3) UI de zoom
@@ -49,8 +53,8 @@ Reaproveitamento direto:
 
 ## Direção técnica para próximos commits
 
-1. Definir contratos de domínio para evento por turno (ação, resposta, consequência).
-2. Introduzir mapeamento de mensagens de rede -> eventos de aplicação (sem lógica no frontend).
+1. Definir invariantes de domínio para ações por turno.
+2. Introduzir fila/ordenação de eventos para consistência multiplayer.
 3. Evoluir para persistência PostgreSQL/Prisma com variáveis de plataforma (Railway).
 4. Planejar autenticação de sessão multiplayer sem quebrar fluxo legado.
 
