@@ -4,14 +4,23 @@ window.MDZApp.createNetClient = function createNetClient(options) {
   const roomId = options.roomId || "default";
   const transport = options.transport;
   const onTurnEvent = typeof options.onTurnEvent === "function" ? options.onTurnEvent : null;
+  const queue = window.MDZApp.createTurnEventQueue
+    ? window.MDZApp.createTurnEventQueue()
+    : null;
 
   let playerId = null;
   let latestState = { players: [] };
 
   function publishTurnEvent(event) {
-    if (event && onTurnEvent) {
-      onTurnEvent(event);
-    }
+    if (!event || !onTurnEvent) return;
+    onTurnEvent(event);
+  }
+
+  function publishQueuedEvents() {
+    if (!queue) return;
+    queue.drain((event) => {
+      publishTurnEvent(event);
+    });
   }
 
   function handleIncoming(rawData) {
@@ -20,7 +29,13 @@ window.MDZApp.createNetClient = function createNetClient(options) {
     const mappedEvent = window.MDZApp.mapNetworkMessageToTurnEvent
       ? window.MDZApp.mapNetworkMessageToTurnEvent(msg)
       : null;
-    publishTurnEvent(mappedEvent);
+
+    if (queue) {
+      queue.push(mappedEvent);
+      publishQueuedEvents();
+    } else {
+      publishTurnEvent(mappedEvent);
+    }
 
     if (msg.type === "joined") {
       playerId = msg.playerId;
@@ -51,7 +66,24 @@ window.MDZApp.createNetClient = function createNetClient(options) {
   }
 
   function move(dx, dy) {
-    transport.send(JSON.stringify({ type: "move", dx, dy }));
+    const moveAction = window.MDZDomain?.createMoveAction
+      ? window.MDZDomain.createMoveAction(dx, dy)
+      : { type: "MOVE", payload: { dx, dy } };
+
+    const validation = window.MDZDomain?.validateMoveAction
+      ? window.MDZDomain.validateMoveAction(moveAction)
+      : { ok: true };
+
+    if (!validation.ok) {
+      console.error("[MDZNet] movimento inválido:", validation.reason);
+      return;
+    }
+
+    transport.send(JSON.stringify({
+      type: "move",
+      dx: moveAction.payload.dx,
+      dy: moveAction.payload.dy,
+    }));
   }
 
   function getState() {

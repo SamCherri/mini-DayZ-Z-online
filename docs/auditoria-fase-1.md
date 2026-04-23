@@ -19,8 +19,10 @@ Também acopla scripts adicionais:
 - `zoom.js` (controle de zoom visual)
 - `runtime-config.js` (configuração de infraestrutura)
 - `turn-events.js` (domínio)
+- `turn-action.js` (domínio)
 - `ws-transport.js` (infraestrutura de transporte)
 - `message-mapper.js` (aplicação)
+- `turn-event-queue.js` (aplicação)
 - `session-client.js` (aplicação)
 - `net-client.js` (fachada de compatibilidade)
 
@@ -38,7 +40,9 @@ Status após ajuste incremental:
 - fallback final derivado de `window.location` (`/ws`), compatível com Railway;
 - protocolo de sessão ficou na camada de aplicação (`session-client.js`);
 - mapeamento de mensagem de rede para evento de turno ficou em `message-mapper.js`;
+- fila de eventos por turno ficou em `turn-event-queue.js`;
 - eventos de turno foram formalizados na camada de domínio (`turn-events.js`);
+- validação de ação de movimento ficou no domínio (`turn-action.js`);
 - transporte websocket ficou na infraestrutura (`ws-transport.js`).
 
 ### 3) UI de zoom
@@ -53,8 +57,8 @@ Reaproveitamento direto:
 
 ## Direção técnica para próximos commits
 
-1. Definir invariantes de domínio para ações por turno.
-2. Introduzir fila/ordenação de eventos para consistência multiplayer.
+1. Evoluir validações de domínio para cenários de turno (cooldown, custo de ação, ordem).
+2. Introduzir timeout/retry na infraestrutura websocket.
 3. Evoluir para persistência PostgreSQL/Prisma com variáveis de plataforma (Railway).
 4. Planejar autenticação de sessão multiplayer sem quebrar fluxo legado.
 

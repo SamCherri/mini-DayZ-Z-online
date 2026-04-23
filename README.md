@@ -45,8 +45,10 @@ Exemplo de injeção antes de carregar `net-client.js`:
 
 - `src/domain/`
   - `multiplayer/turn-events.js`
+  - `multiplayer/turn-action.js`
 - `src/application/`
   - `multiplayer/message-mapper.js`
+  - `multiplayer/turn-event-queue.js`
   - `multiplayer/session-client.js`
 - `src/infrastructure/`
   - `websocket/ws-transport.js`
