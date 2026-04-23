@@ -19,8 +19,9 @@ A base já está segmentada em camadas e ligada ao shell legado sem alterar `c2r
 6. Contrato versionado de protocolo (`v1`).
 7. Observabilidade com correlationId e guia de operação.
 8. Testes automatizados de domínio/protocolo.
+9. Eventos remotos agora são tratados na aplicação sem gerar `MOVE` sintético.
 
 ## Limites desta fase
-- Não há servidor websocket autoritativo nesta base.
+- Servidor websocket autoritativo inicial implementado em `src/server/authoritative-turn-server.mjs` (ainda sem adapter de rede em produção).
 - Persistência Prisma foi preparada, mas não integrada em runtime de produção.
 - Fluxo visual legado permanece como bridge, sem redesign de UI.

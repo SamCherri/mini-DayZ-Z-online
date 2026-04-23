@@ -18,6 +18,7 @@ Base incremental do game mode com separação por camadas, bridge legado e prepa
 - `src/application/multiplayer/command-handler.js`
 - `src/application/multiplayer/turn-orchestrator.js`
 - `src/application/multiplayer/session-client.js`
+- `src/application/multiplayer/remote-event-handler.js`
 
 ### Infraestrutura
 - `src/infrastructure/websocket/ws-transport.js`
@@ -25,6 +26,9 @@ Base incremental do game mode com separação por camadas, bridge legado e prepa
 - `src/infrastructure/observability/logger.js`
 - `src/infrastructure/persistence/prisma-client.ts`
 - `prisma/schema.prisma`
+
+### Servidor autoritativo (Node)
+- `src/server/authoritative-turn-server.mjs`
 
 ### Apresentação/Bridge legado
 - `legacy-shell/index.html`

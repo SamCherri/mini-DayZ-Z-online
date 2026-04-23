@@ -24,6 +24,10 @@ window.MDZApp.createNetClient = function createNetClient(options) {
     })
     : null;
 
+  const remoteEventHandler = window.MDZApp.createRemoteEventHandler
+    ? window.MDZApp.createRemoteEventHandler({ onTurnEvent, logger })
+    : null;
+
   let playerId = null;
   let latestState = { players: [] };
 
@@ -62,12 +66,8 @@ window.MDZApp.createNetClient = function createNetClient(options) {
       ? window.MDZApp.mapNetworkMessageToTurnEvent(payload.type ? payload : msg)
       : null;
 
-    if (mappedEvent && orchestrator) {
-      orchestrator.execute({
-        type: "MOVE",
-        turn: orchestrator.getState().currentTurn,
-        payload: { dx: 0, dy: 0 },
-      });
+    if (mappedEvent && remoteEventHandler) {
+      remoteEventHandler.handle(mappedEvent);
     } else if (mappedEvent && onTurnEvent) {
       onTurnEvent(mappedEvent);
     }

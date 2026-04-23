@@ -9,6 +9,7 @@ Orquestra casos de uso, coordenando domínio e infraestrutura.
 - `multiplayer/command-handler.js` (aplicação de comandos via domínio)
 - `multiplayer/turn-orchestrator.js` (fluxo de turno)
 - `multiplayer/session-client.js` (sessão multiplayer)
+- `multiplayer/remote-event-handler.js` (eventos remotos sem comando local artificial)
 
 ## Diretriz
 Toda decisão de fluxo passa pela aplicação; apresentação apenas dispara comandos e renderiza resultados.
