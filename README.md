@@ -36,6 +36,7 @@ Base incremental do game mode com separação por camadas, bridge legado e prepa
 - `docs/preparacao-mod-roleplay.md`
 - `docs/auditoria-fase-1.md`
 - `docs/operacao-multiplayer.md`
+- `docs/etapas-conclusao-gamemod.md`
 
 ## Ferramentas
 
