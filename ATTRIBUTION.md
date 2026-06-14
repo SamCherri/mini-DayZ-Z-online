@@ -33,3 +33,12 @@ Avoid:
 - Using official branding in marketing.
 - Publishing copyrighted assets without permission.
 - Distributing modified APKs from the original Android game.
+- Extracting code, images, audio, or other resources from an original or
+  modified APK when their redistribution license is not explicit.
+
+## Import provenance
+
+Only files obtained directly from the public `011eh/minidayz` source
+repository may be imported as the initial Godot base. APKs, Construct/Cordova
+packages, and archives with uncertain provenance are not accepted as source
+material.

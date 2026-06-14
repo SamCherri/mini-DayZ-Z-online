@@ -93,6 +93,15 @@ Veja também:
 
 ## Status
 
-Repositório inicializado para planejamento e preparação da versão RP multiplayer.
+Repositório inicializado para planejamento e preparação da versão RP
+multiplayer. A auditoria preliminar confirmou que a referência pública declara
+Godot 4.6 e contém a cena `world.tscn`, mas a importação está bloqueada por
+HTTP 403 no ambiente atual.
 
-Próximo passo: importar a base Godot e criar a primeira branch funcional de multiplayer.
+Um pacote Construct/Cordova de procedência incompatível foi descartado e não
+foi usado como fonte. Consulte
+[`docs/IMPORT_VALIDATION.md`](docs/IMPORT_VALIDATION.md) para ver os testes,
+bloqueios e o procedimento seguro de continuação.
+
+Próximo passo: importar a árvore pública Godot em um ambiente com acesso ao
+GitHub, validar a execução offline e somente depois iniciar o multiplayer.
