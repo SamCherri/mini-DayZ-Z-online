@@ -23,7 +23,8 @@ servidor. O fluxo usa RPCs confiáveis:
 4. o protocolo valida o nome e emite `session_requested(peer_id, display_name)`;
 5. `server/ServerMain.gd` cria a sessão em memória;
 6. o servidor responde com aceite ou rejeição somente ao peer remetente;
-7. após o aceite, o servidor envia os eventos de spawn autorizados.
+7. após o aceite, o cliente solicita o personagem temporário;
+8. o spawn continua bloqueado até o personagem também ser aceito.
 
 Os sinais compartilhados são:
 
@@ -54,7 +55,7 @@ trouxer um ID diferente do ID local.
 ```gdscript
 connected_peers[peer_id] = {
     "connected_at": ...,
-    "position": ... # adicionada somente após a sessão
+    "position": ... # adicionada somente após o personagem
 }
 
 sessions[peer_id] = {
@@ -64,19 +65,20 @@ sessions[peer_id] = {
 ```
 
 A conexão é registrada imediatamente, mas a posição e o spawn só são
-preparados depois da sessão aceita. Ao desconectar, o servidor remove o peer e
-a sessão. Como tudo está em memória, reiniciar o processo perde todos esses
-dados.
+preparados depois da sessão e do personagem temporário aceitos. Ao
+desconectar, o servidor remove o peer, a sessão e o personagem. Como tudo está
+em memória, reiniciar o processo perde todos esses dados.
 
 ## Dependência de spawn e movimento
 
-O servidor dedicado passa a exigir uma sessão aceita:
+O servidor dedicado passa a exigir uma sessão e um personagem aceitos:
 
-- **spawn:** não acontece ao conectar; acontece após criar a sessão;
-- **movimento:** inputs de peers sem sessão são ignorados;
-- **snapshots:** são enviados somente aos peers com sessão;
-- **despawn:** é enviado aos peers com sessão quando outro peer autenticado
-  temporariamente desconecta.
+- **spawn:** não acontece ao conectar ou somente ao criar a sessão; acontece
+  após criar o personagem;
+- **movimento:** inputs de peers sem sessão ou personagem são ignorados;
+- **snapshots:** são enviados somente aos peers com personagem;
+- **despawn:** é enviado aos peers com personagem quando outro personagem
+  temporário desconecta.
 
 O avatar continua sendo `multiplayer/simple_avatar.tscn`. Nenhuma entidade de
 personagem final é criada no servidor.
@@ -87,20 +89,24 @@ O teste automatizado inicia os clientes assim:
 
 ```bash
 godot --headless --path . -- \
-  --connect 127.0.0.1 --port 7000 --test-name ClientOne --test-move
+  --connect 127.0.0.1 --port 7000 --test-name SessionOne \
+  --test-first-name Client --test-last-name One --test-move
 
 godot --headless --path . -- \
-  --connect 127.0.0.1 --port 7000 --test-name ClientTwo
+  --connect 127.0.0.1 --port 7000 --test-name SessionTwo \
+  --test-first-name Client --test-last-name Two
 ```
 
 Se `--test-name` não for informado, o cliente usa temporariamente
 `Guest<peer_id>`, por exemplo `Guest2`. Uma interface futura deverá substituir
 essa escolha automática.
 
-O CI aguarda primeiro:
+O CI aguarda, nesta ordem:
 
 - `SessionProtocol: sessão aceita`;
 - `ServerMain: sessão criada`.
+- `CharacterProtocol: personagem temporário aceito`;
+- `ServerMain: personagem temporário criado`.
 
 Somente depois valida spawn, movimento, desconexão e despawn.
 

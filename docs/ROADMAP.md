@@ -60,6 +60,7 @@ host local não será promovido a servidor de produção.
 - [x] Permitir configurar endereço e porta do servidor por argumentos no cliente.
 - [x] Criar o protocolo inicial de spawn/despawn visual autorizado pelo servidor.
 - [x] Criar sessão temporária em memória antes de liberar spawn e movimento.
+- [x] Criar personagem RP temporário em memória antes de liberar spawn e movimento.
 - [ ] Confirmar no CI conexão, spawn, movimento, desconexão e despawn com dois clientes.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
@@ -72,6 +73,8 @@ host local não será promovido a servidor de produção.
 
 ## Fase 4 — Login, conta e personagem
 
+- [x] Validar o primeiro protocolo de personagem temporário em memória, sem conta
+  ou persistência.
 - [ ] Criar cadastro e login de conta.
 - [ ] Armazenar senha somente por hash seguro.
 - [ ] Criar ID único de conta e personagem.

@@ -88,7 +88,9 @@ ServerMain: peer 2 desconectado. Total conectado: 0.
 
 A conexão, sozinha, não cria mais o avatar. O cliente deve concluir a sessão
 temporária descrita em
-[`DEDICATED_SESSION_PROTOCOL.md`](DEDICATED_SESSION_PROTOCOL.md) antes de
+[`DEDICATED_SESSION_PROTOCOL.md`](DEDICATED_SESSION_PROTOCOL.md) e o personagem
+descrito em
+[`DEDICATED_CHARACTER_PROTOCOL.md`](DEDICATED_CHARACTER_PROTOCOL.md) antes de
 receber spawn e enviar movimento aceito pelo servidor.
 
 ## Limitações atuais
@@ -96,7 +98,8 @@ receber spawn e enviar movimento aceito pelo servidor.
 - a lista de peers existe somente em memória e é perdida ao reiniciar;
 - há somente sessão temporária em memória; não há autenticação, conta, sessão
   persistente ou reconexão;
-- não há criação, seleção ou carregamento de personagem;
+- há somente criação de personagem RP temporário em memória; não há seleção,
+  carregamento ou personagem persistente;
 - `character/player/player.tscn` não é instanciado;
 - o spawn entregue é somente um evento visual temporário autorizado pelo
   servidor, sem entidade final de personagem;

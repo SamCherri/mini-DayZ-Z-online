@@ -19,11 +19,13 @@ autoridade multiplayer, que no ENet do Godot é o peer servidor de ID `1`.
 
 Quando um peer conecta, `server/ServerMain.gd` registra somente a conexão. Após
 o handshake descrito em
-[`DEDICATED_SESSION_PROTOCOL.md`](DEDICATED_SESSION_PROTOCOL.md), o servidor:
+[`DEDICATED_SESSION_PROTOCOL.md`](DEDICATED_SESSION_PROTOCOL.md) e cria o
+personagem descrito em
+[`DEDICATED_CHARACTER_PROTOCOL.md`](DEDICATED_CHARACTER_PROTOCOL.md), o servidor:
 
 1. registra em memória uma posição temporária;
-2. envia ao novo cliente os peers que já possuem sessão aceita;
-3. anuncia o novo peer aos clientes com sessão aceita;
+2. envia ao novo cliente os peers que já possuem personagem aceito;
+3. anuncia o novo peer aos clientes com personagem aceito;
 4. envia ao novo cliente o spawn dele mesmo.
 
 Quando um peer desconecta, o servidor o remove do registro e envia
