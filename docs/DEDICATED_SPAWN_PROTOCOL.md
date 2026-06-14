@@ -66,8 +66,64 @@ godot --path . -- --connect 127.0.0.1
 Esse fluxo continua usando os sinais do `NetworkManager`; ele não se torna um
 servidor de produção.
 
+## Smoke test automatizado de runtime
+
+Na raiz do repositório, com o executável `godot` 4.6 disponível no `PATH`,
+execute:
+
+```bash
+./scripts/smoke_test_dedicated_spawn.sh
+```
+
+Quando executado com sucesso, o script inicia o servidor dedicado na porta UDP
+`7000`, conecta dois clientes headless, encerra o primeiro cliente e verifica
+automaticamente:
+
+- inicialização do servidor;
+- duas conexões registradas pelo servidor;
+- eventos de spawn recebidos pelos dois clientes;
+- desconexão do primeiro cliente;
+- evento de despawn recebido pelo cliente restante.
+
+Uma falha de conexão, ausência de mensagem esperada ou encerramento inesperado
+faz o comando terminar com código diferente de zero. Os logs completos são
+gravados por padrão em `artifacts/godot-smoke-test/`:
+
+```text
+server.log
+client-1.log
+client-2.log
+```
+
+Para usar outro caminho do executável, porta, diretório ou limite de espera:
+
+```bash
+GODOT_BIN=/caminho/para/godot PORT=7001 \
+LOG_DIR=/tmp/godot-smoke TIMEOUT_SECONDS=30 \
+./scripts/smoke_test_dedicated_spawn.sh
+```
+
+O workflow `.github/workflows/godot-smoke-test.yml` baixa a versão oficial
+Godot 4.6 para Linux, executa o mesmo script em cada pull request e publica os
+três logs como artefato, inclusive quando o teste falha.
+
+### Como interpretar os logs
+
+- `ServerMain: servidor dedicado iniciado`: a porta ENet foi aberta;
+- `ServerMain: peer ... conectado`: um cliente alcançou o servidor;
+- `SpawnProtocol: evento de spawn recebido`: o cliente recebeu uma autorização
+  de representação visual enviada pelo servidor;
+- `ServerMain: peer ... desconectado`: o servidor percebeu a saída;
+- `SpawnProtocol: evento de despawn recebido`: o cliente restante recebeu a
+  remoção autorizada.
+
 ## Limitações
 
+- quando o workflow passa, o CI headless valida processos, rede local e
+  mensagens; ele não inspeciona pixels nem comprova visualmente que o avatar
+  foi desenhado;
+- o teste usa dois clientes no mesmo runner e não representa internet pública,
+  Android, latência real ou teste de carga;
 - posições são temporárias, lineares e existem apenas em memória;
 - movimento ainda é informado pelo cliente pelo componente visual existente;
 - não há validação de colisão, mapa, reconexão ou restauração;
