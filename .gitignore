@@ -2,7 +2,8 @@
 .godot/
 .import/
 export.cfg
-export_presets.cfg
+# O preset Android offline usado pelo CI faz parte da configuração versionada.
+!export_presets.cfg
 
 # Godot generated files
 *.translation

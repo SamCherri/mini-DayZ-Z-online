@@ -35,6 +35,7 @@ do anterior e de testes de carga, rede, banco e gameplay.
 - [ ] Validar status: fome, sede, sangue, stamina e doença.
 - [ ] Validar execução local para desenvolvimento, sem tratar o modo offline
   como produto final.
+- [x] Criar workflow manual para APK offline debug interno.
 
 ## Fase 2 — Smoke test local de rede (2 jogadores)
 

@@ -1,0 +1,90 @@
+name: Android offline debug APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-android-debug:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GODOT_VERSION: "4.6"
+      GODOT_ARCHIVE: Godot_v4.6-stable_linux.x86_64.zip
+      GODOT_TEMPLATES_ARCHIVE: Godot_v4.6-stable_export_templates.tpz
+      APK_PATH: exports/minidayz-offline-debug.apk
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Instalar Godot 4.6
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/${GODOT_ARCHIVE}" \
+            --output /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          sudo install -m 0755 \
+            "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" \
+            /usr/local/bin/godot
+          godot --version
+
+      - name: Instalar templates Android do Godot 4.6
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/${GODOT_TEMPLATES_ARCHIVE}" \
+            --output /tmp/godot-export-templates.tpz
+          templates_dir="${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "${templates_dir}"
+          unzip -q /tmp/godot-export-templates.tpz -d /tmp/godot-templates
+          cp -a /tmp/godot-templates/templates/. "${templates_dir}/"
+          test -f "${templates_dir}/android_debug.apk"
+
+      - name: Preparar Android SDK e chave debug
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          mkdir -p "${HOME}/.android"
+          if [[ ! -f "${HOME}/.android/debug.keystore" ]]; then
+            keytool -genkeypair -v \
+              -keystore "${HOME}/.android/debug.keystore" \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Importar projeto Godot
+        run: ./scripts/import_godot_project.sh
+
+      - name: Exportar APK Android debug offline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "${APK_PATH}")"
+          godot --headless --path . \
+            --export-debug "Android Offline Debug" "${APK_PATH}"
+          test -s "${APK_PATH}"
+
+      - name: Publicar APK offline debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: minidayz-offline-debug-apk
+          path: exports/minidayz-offline-debug.apk
+          if-no-files-found: error
