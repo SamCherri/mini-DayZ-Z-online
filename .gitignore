@@ -33,5 +33,6 @@ logs/
 # Local secrets/config
 .env
 .env.*
+!.env.example
 secrets.json
 local_config.json
