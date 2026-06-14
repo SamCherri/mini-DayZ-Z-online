@@ -56,6 +56,7 @@ host local não será promovido a servidor de produção.
 
 - [x] Criar a estrutura inicial e a cena executável do servidor headless.
 - [x] Permitir configurar endereço e porta do servidor por argumentos no cliente.
+- [x] Criar o protocolo inicial de spawn/despawn visual autorizado pelo servidor.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
 - [ ] Fazer o servidor controlar posição, vida e inventário crítico.
@@ -143,14 +144,12 @@ vem depois que o fluxo online dedicado estiver funcional.
 
 ## Prioridade imediata
 
-1. Concluir o alinhamento da documentação e da arquitetura online dedicada.
-2. Validar a execução real do projeto quando o Godot estiver instalado.
-3. Avançar para o spawn visual seguro entre duas instâncias ou iniciar a
-   estrutura do servidor dedicado/headless.
-4. Concluir o smoke test ENet sem promover o host local a servidor de produção.
-5. Conectar clientes ao servidor dedicado pela internet.
-6. Implementar login e personagem.
-7. Implementar persistência PostgreSQL protegida pelo servidor.
-8. Implementar área de interesse.
-9. Avançar pelos testes de 2, 10, 20, 50 e 100 jogadores.
-10. Somente então consolidar o APK Android online para testes de release.
+1. Validar a execução real do protocolo de spawn dedicado com dois clientes.
+2. Concluir o smoke test ENet sem promover o host local a servidor de produção.
+3. Separar e implantar o processo servidor fora do APK cliente.
+4. Conectar clientes ao servidor dedicado pela internet.
+5. Implementar login e personagem.
+6. Implementar persistência PostgreSQL protegida pelo servidor.
+7. Implementar área de interesse.
+8. Avançar pelos testes de 2, 10, 20, 50 e 100 jogadores.
+9. Somente então consolidar o APK Android online para testes de release.

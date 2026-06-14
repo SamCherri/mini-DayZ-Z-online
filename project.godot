@@ -20,6 +20,7 @@ run/main_scene="uid://b3rbvu3iaughq"
 PlayerStatus="*uid://bpminso8td3ev"
 ItemActionTable="*uid://3dyxqxf23328"
 NetworkManager="*res://multiplayer/NetworkManager.gd"
+SpawnProtocol="*res://multiplayer/SpawnProtocol.gd"
 
 [debug]
 
