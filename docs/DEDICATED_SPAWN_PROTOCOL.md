@@ -37,9 +37,14 @@ No cliente, o protocolo emite:
 - `despawn_peer_received(peer_id)`.
 
 `multiplayer/WorldSpawner.gd` escuta esses sinais e cria ou remove o avatar
-temporário. Ao receber o primeiro evento dedicado, ele limpa os avatares
-preparados pelo fluxo genérico do smoke test local e passa a respeitar as
-posições enviadas pelo servidor.
+temporário. Clientes iniciados com `--dedicated-client` não criam avatares
+provisórios ao conectar: o spawn visual vem exclusivamente do servidor por
+`SpawnProtocol`, depois dos aceites de sessão e personagem.
+
+Ao receber o primeiro evento dedicado, o `WorldSpawner` ainda limpa eventuais
+avatares preparados pelo fluxo genérico antigo. Essa limpeza foi mantida como
+fallback defensivo para clientes antigos ou chamadas legadas, mas deixou de
+ser o fluxo normal do cliente dedicado.
 
 ## Como testar
 
@@ -52,8 +57,8 @@ godot --headless --path . server/server_main.tscn -- --dedicated-server
 Em outros dois terminais:
 
 ```bash
-godot --path . -- --connect 127.0.0.1
-godot --path . -- --connect 127.0.0.1
+godot --path . -- --connect 127.0.0.1 --dedicated-client
+godot --path . -- --connect 127.0.0.1 --dedicated-client
 ```
 
 Cada cliente deve mostrar os dois avatares simples nas posições temporárias
@@ -68,7 +73,9 @@ godot --path . -- --connect 127.0.0.1
 ```
 
 Esse fluxo continua usando os sinais do `NetworkManager`; ele não se torna um
-servidor de produção.
+servidor de produção. Em resumo, `--connect` sozinho mantém o comportamento
+local legado; `--connect ... --dedicated-client` seleciona o protocolo do
+servidor dedicado.
 
 ## Smoke test automatizado de runtime
 

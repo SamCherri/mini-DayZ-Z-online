@@ -54,18 +54,28 @@ Com o servidor local executando na porta padrão, abra outro terminal na raiz do
 repositório e execute:
 
 ```bash
-godot --path . -- --connect 127.0.0.1
+godot --path . -- --connect 127.0.0.1 --dedicated-client
 ```
 
 Esse comando usa a fundação cliente existente em
 `multiplayer/NetworkManager.gd`. Para um servidor em outra máquina, substitua
 `127.0.0.1` pelo IP ou domínio alcançável do servidor.
 
+O argumento `--dedicated-client` separa explicitamente este fluxo do smoke
+test host/client local. Com ele, o cliente marca a conexão como estabelecida,
+solicita a sessão temporária, aguarda o personagem ser aceito e só cria
+avatares quando recebe autorização do servidor por `SpawnProtocol`. Portanto,
+não existe avatar provisório local antes de sessão e personagem.
+
+`--connect` sozinho continua reservado ao fluxo técnico antigo/local e ainda
+emite os sinais legados do `NetworkManager`, necessários ao smoke test com
+`--host`. Ele não deve ser usado como cliente do servidor dedicado.
+
 Para conectar a uma porta customizada, informe `--port` depois do endereço:
 
 ```bash
-godot --path . -- --connect 127.0.0.1 --port 7000
-godot --path . -- --connect meu-servidor.com --port 7001
+godot --path . -- --connect 127.0.0.1 --port 7000 --dedicated-client
+godot --path . -- --connect meu-servidor.com --port 7001 --dedicated-client
 ```
 
 O endereço padrão continua sendo `127.0.0.1` nas chamadas internas do

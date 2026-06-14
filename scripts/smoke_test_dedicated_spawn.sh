@@ -94,7 +94,7 @@ wait_for_log "${SERVER_LOG}" "ServerMain: servidor dedicado iniciado"
 
 printf 'Iniciando cliente 1...\n'
 "${GODOT_BIN}" --headless --path . -- \
-	--connect 127.0.0.1 --port "${PORT}" \
+	--connect 127.0.0.1 --port "${PORT}" --dedicated-client \
 	--test-name SessionOne --test-first-name Client --test-last-name One \
 	--test-move >"${CLIENT_ONE_LOG}" 2>&1 &
 CLIENT_ONE_PID=$!
@@ -109,7 +109,7 @@ wait_for_log "${CLIENT_ONE_LOG}" "MovementProtocol: snapshot recebido"
 
 printf 'Iniciando cliente 2...\n'
 "${GODOT_BIN}" --headless --path . -- \
-	--connect 127.0.0.1 --port "${PORT}" \
+	--connect 127.0.0.1 --port "${PORT}" --dedicated-client \
 	--test-name SessionTwo --test-first-name Client --test-last-name Two \
 	>"${CLIENT_TWO_LOG}" 2>&1 &
 CLIENT_TWO_PID=$!

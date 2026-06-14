@@ -61,6 +61,8 @@ host local não será promovido a servidor de produção.
 - [x] Criar o protocolo inicial de spawn/despawn visual autorizado pelo servidor.
 - [x] Criar sessão temporária em memória antes de liberar spawn e movimento.
 - [x] Criar personagem RP temporário em memória antes de liberar spawn e movimento.
+- [x] Separar por `--dedicated-client` o cliente dedicado do smoke host/client
+  local, sem spawn provisório antes de sessão e personagem.
 - [ ] Confirmar no CI conexão, spawn, movimento, desconexão e despawn com dois clientes.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
