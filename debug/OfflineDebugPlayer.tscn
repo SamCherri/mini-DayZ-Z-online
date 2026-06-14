@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://debug/OfflineDebugPlayer.gd" id="1_player"]
+
+[sub_resource type="CircleShape2D" id="CircleShape_player"]
+radius = 28.0
+
+[node name="OfflineDebugPlayer" type="CharacterBody2D"]
+z_index = 100
+script = ExtResource("1_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape_player")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -76.0
+offset_top = -61.0
+offset_right = 76.0
+offset_bottom = -32.0
+theme_override_colors/font_color = Color(0.75, 1, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "PLAYER DEBUG"
+horizontal_alignment = 1
