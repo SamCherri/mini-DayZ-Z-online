@@ -59,9 +59,22 @@ Esse comando usa a fundação cliente existente em
 `multiplayer/NetworkManager.gd`. Para um servidor em outra máquina, substitua
 `127.0.0.1` pelo IP ou domínio alcançável do servidor.
 
-O `NetworkManager` atual conecta sempre à porta padrão `7000`. Embora o
-servidor já aceite `--port`, conectar o cliente a outra porta exigirá uma
-configuração de endereço/porta no cliente em uma etapa futura.
+Para conectar a uma porta customizada, informe `--port` depois do endereço:
+
+```bash
+godot --path . -- --connect 127.0.0.1 --port 7000
+godot --path . -- --connect meu-servidor.com --port 7001
+```
+
+O endereço padrão continua sendo `127.0.0.1` nas chamadas internas do
+`NetworkManager`, e a porta padrão continua sendo `7000`. Se `--port` não for
+informado, o cliente usa `7000`. Se o argumento estiver sem valor, não for um
+número inteiro ou estiver fora da faixa válida de `1` a `65535`, o cliente
+registra um aviso e usa `7000` com segurança.
+
+O valor usado no cliente deve ser igual à porta escolhida ao iniciar o
+servidor. Em acesso pela internet, use o IP público ou domínio do servidor e
+confirme que essa porta está liberada como **UDP**.
 
 Quando um cliente entra ou sai, o terminal do servidor registra o ID do peer e
 o total atual de conexões:

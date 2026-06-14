@@ -25,6 +25,9 @@ const DEFAULT_PORT := 7000
 const DEFAULT_MAX_CLIENTS := 8
 const SERVER_PEER_ID := 1
 const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
+const CONNECT_ARGUMENT := "--connect"
+const PORT_ARGUMENT := "--port"
+const MAX_PORT := 65535
 
 var connection_state := ConnectionState.OFFLINE
 
@@ -105,7 +108,7 @@ func _start_from_command_line() -> void:
 			print("NetworkManager: host local iniciado na porta %d." % DEFAULT_PORT)
 		return
 
-	var connect_argument_index := arguments.find("--connect")
+	var connect_argument_index := arguments.find(CONNECT_ARGUMENT)
 	if connect_argument_index == -1:
 		return
 	if connect_argument_index + 1 >= arguments.size():
@@ -113,11 +116,44 @@ func _start_from_command_line() -> void:
 		return
 
 	var address := arguments[connect_argument_index + 1]
-	var error := join_host(address)
+	if address.begins_with("--"):
+		connection_failed.emit("Informe um endereço válido depois de --connect.")
+		return
+
+	var port := _read_port_argument(arguments)
+	var error := join_host(address, port)
 	if error == OK:
-		print(
-			"NetworkManager: conectando a %s:%d." % [address, DEFAULT_PORT]
+		print("NetworkManager: conectando a %s:%d." % [address, port])
+
+
+func _read_port_argument(arguments: PackedStringArray) -> int:
+	var port_argument_index := arguments.find(PORT_ARGUMENT)
+	if port_argument_index == -1:
+		return DEFAULT_PORT
+	if port_argument_index + 1 >= arguments.size():
+		push_warning(
+			"NetworkManager: --port sem valor; usando a porta padrão %d."
+			% DEFAULT_PORT
 		)
+		return DEFAULT_PORT
+
+	var raw_port := arguments[port_argument_index + 1]
+	if not raw_port.is_valid_int():
+		push_warning(
+			"NetworkManager: porta inválida (%s); usando a porta padrão %d."
+			% [raw_port, DEFAULT_PORT]
+		)
+		return DEFAULT_PORT
+
+	var port := raw_port.to_int()
+	if port < 1 or port > MAX_PORT:
+		push_warning(
+			"NetworkManager: porta fora da faixa 1-%d (%s); usando a porta padrão %d."
+			% [MAX_PORT, raw_port, DEFAULT_PORT]
+		)
+		return DEFAULT_PORT
+
+	return port
 
 
 func _can_start_connection() -> bool:

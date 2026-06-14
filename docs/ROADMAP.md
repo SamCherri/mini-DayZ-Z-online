@@ -54,6 +54,7 @@ host local não será promovido a servidor de produção.
 ## Fase 3 — Servidor dedicado online/headless
 
 - [x] Criar a estrutura inicial e a cena executável do servidor headless.
+- [x] Permitir configurar endereço e porta do servidor por argumentos no cliente.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
 - [ ] Fazer o servidor controlar posição, vida e inventário crítico.
