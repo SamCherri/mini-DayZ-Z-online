@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusItemResource" format=3 uid="uid://dqh8k3c16o704"]
+
+[ext_resource type="Script" uid="uid://38ikqxiywme2" path="res://item/res/script/status_item_resource.gd" id="1_8yaol"]
+[ext_resource type="Texture2D" uid="uid://bgr63grc5502l" path="res://asset/images/item/salmon.png" id="2_i4rfk"]
+
+[resource]
+script = ExtResource("1_8yaol")
+hunger = 15
+drink = 3
+stack_limit = 5
+id = 75
+item_name = &"Salmon"
+texture = ExtResource("2_i4rfk")

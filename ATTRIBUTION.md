@@ -42,3 +42,8 @@ Only files obtained directly from the public `011eh/minidayz` source
 repository may be imported as the initial Godot base. APKs, Construct/Cordova
 packages, and archives with uncertain provenance are not accepted as source
 material.
+
+## Imported source snapshot
+
+Initial Godot base imported from:
+https://github.com/011eh/minidayz

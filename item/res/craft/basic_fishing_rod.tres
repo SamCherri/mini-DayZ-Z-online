@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DurabilityItemResource" format=3 uid="uid://doo73opad2wpa"]
+
+[ext_resource type="Script" uid="uid://cex83hv3yxo1w" path="res://item/res/script/durability_item_resource.gd" id="1_jwsid"]
+[ext_resource type="Texture2D" uid="uid://dne811f3aq243" path="res://asset/images/item/basic_fishing_rod.png" id="2_ty60k"]
+
+[resource]
+script = ExtResource("1_jwsid")
+wear_per_use = 20.0
+id = 93
+item_name = &"Basic Fishing Rod"
+texture = ExtResource("2_ty60k")
