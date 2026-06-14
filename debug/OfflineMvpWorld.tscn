@@ -1,0 +1,79 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://debug/OfflineMvpWorld.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://debug/OfflineDebugPlayer.tscn" id="2_player"]
+
+[node name="OfflineMvpWorld" type="Node2D"]
+script = ExtResource("1_world")
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="OfflineDebugPlayer" parent="." instance=ExtResource("2_player")]
+position = Vector2(1500, 1500)
+
+[node name="Hud" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Root" type="Control" parent="Hud"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TitlePanel" type="PanelContainer" parent="Hud/Root"]
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 390.0
+offset_bottom = 112.0
+
+[node name="Margin" type="MarginContainer" parent="Hud/Root/TitlePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="Text" type="Label" parent="Hud/Root/TitlePanel/Margin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 1, 0.65, 1)
+theme_override_font_sizes/font_size = 22
+text = "MVP OFFLINE ANDROID
+Sem servidor / Sem login"
+
+[node name="StatusPanel" type="PanelContainer" parent="Hud/Root"]
+offset_left = 18.0
+offset_top = 124.0
+offset_right = 390.0
+offset_bottom = 180.0
+
+[node name="Margin" type="MarginContainer" parent="Hud/Root/StatusPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="Status" type="Label" parent="Hud/Root/StatusPanel/Margin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "VIDA 100   FOME 82   SEDE 74"
+
+[node name="Feedback" type="Label" parent="Hud/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -530.0
+offset_top = 76.0
+offset_right = -18.0
+offset_bottom = 122.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.94, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "MVP pronto"
+horizontal_alignment = 2
