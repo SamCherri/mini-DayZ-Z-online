@@ -99,6 +99,30 @@ jobs:
         timeout-minutes: 1
         run: bash scripts/configure_android_export_settings.sh
 
+      - name: Diagnosticar configuração Android antes da exportação
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/android-export
+          {
+            echo "Editor settings carregáveis:"
+            ls -la "${HOME}/.config/godot" || true
+            grep -v 'debug_keystore_pass' \
+              "${HOME}/.config/godot/editor_settings-${GODOT_VERSION}.tres" || true
+
+            echo "Templates Godot:"
+            ls -la \
+              "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable" || true
+
+            echo "Android SDK:"
+            ls -la "${ANDROID_HOME}" || true
+            ls -la "${ANDROID_HOME}/platforms/android-35" || true
+            ls -la "${ANDROID_HOME}/build-tools/35.0.0" || true
+
+            echo "Export preset Android:"
+            sed -n '1,240p' export_presets.cfg
+          } 2>&1 | tee artifacts/android-export/preflight.log
+
       - name: Exportar APK Android debug offline
         shell: bash
         run: |
