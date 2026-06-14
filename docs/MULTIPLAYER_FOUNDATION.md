@@ -148,7 +148,8 @@ ser distribuído como forma de hospedagem do jogo.
 - não há seleção, persistência, reconexão ou restauração de personagem;
 - o movimento ainda é informado pelo cliente, sem validação autoritativa;
 - não há mapa, animações de personagem, combate ou sistemas de sobrevivência;
-- o servidor dedicado continua apenas registrando conexões em memória;
+- o servidor dedicado possui um protocolo visual inicial separado, mas ainda
+  não mantém personagem ou gameplay autoritativo;
 - este teste não valida APK, internet pública, escala ou 100 jogadores.
 
 ## Próxima integração segura

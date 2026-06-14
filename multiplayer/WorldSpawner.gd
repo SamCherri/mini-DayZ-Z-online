@@ -13,6 +13,7 @@ const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
 
 var _players: Node2D
 var _spawn_points: Array[Node2D] = []
+var _dedicated_protocol_active := false
 
 
 func _ready() -> void:
@@ -35,14 +36,36 @@ func _ready() -> void:
 
 	NetworkManager.player_spawn_requested.connect(_spawn_player)
 	NetworkManager.player_despawn_requested.connect(_despawn_player)
+	SpawnProtocol.spawn_peer_received.connect(_spawn_authorized_peer)
+	SpawnProtocol.despawn_peer_received.connect(_despawn_player)
 
 
 func _spawn_player(peer_id: int) -> void:
 	if _players == null or _spawn_points.is_empty():
 		return
+	var spawn_position := _spawn_points[
+		_players.get_child_count() % _spawn_points.size()
+	].position
+	_spawn_player_at(peer_id, spawn_position)
+
+
+func _spawn_authorized_peer(peer_id: int, position: Vector2) -> void:
+	if not _dedicated_protocol_active:
+		_dedicated_protocol_active = true
+		for child in _players.get_children():
+			_players.remove_child(child)
+			child.queue_free()
+	_spawn_player_at(peer_id, position)
+
+
+func _spawn_player_at(peer_id: int, position: Vector2) -> void:
+	if _players == null or _spawn_points.is_empty():
+		return
 
 	var avatar_name := _avatar_name(peer_id)
 	if _players.has_node(avatar_name):
+		var existing_avatar := _players.get_node(avatar_name) as Node2D
+		existing_avatar.position = position
 		return
 
 	var avatar := avatar_scene.instantiate() as SimpleAvatar
@@ -51,7 +74,7 @@ func _spawn_player(peer_id: int) -> void:
 		return
 
 	avatar.configure(peer_id)
-	avatar.position = _spawn_points[_players.get_child_count() % _spawn_points.size()].position
+	avatar.position = position
 	_players.add_child(avatar)
 
 

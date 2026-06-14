@@ -4,7 +4,9 @@
 
 Esta é a primeira estrutura executável do servidor dedicado do Mini DayZ Z
 Online RP. Ela inicia um processo Godot sem interface gráfica, abre uma porta
-ENet e mantém em memória uma lista simples dos peers conectados.
+ENet, mantém em memória uma lista simples dos peers conectados e distribui o
+protocolo visual inicial descrito em
+[`DEDICATED_SPAWN_PROTOCOL.md`](DEDICATED_SPAWN_PROTOCOL.md).
 
 Esta fundação não substitui as etapas futuras de servidor autoritativo. Ela não
 instancia `player.tscn`, não executa regras de gameplay e não acessa banco de
@@ -90,6 +92,8 @@ ServerMain: peer 2 desconectado. Total conectado: 0.
 - não há autenticação, conta, sessão persistente ou reconexão;
 - não há criação, seleção ou carregamento de personagem;
 - `character/player/player.tscn` não é instanciado;
+- o spawn entregue é somente um evento visual temporário autorizado pelo
+  servidor, sem entidade final de personagem;
 - não há mapa, movimento, inventário, dano, status, zumbis ou loot no servidor;
 - não há banco de dados nem acesso a PostgreSQL;
 - não há autoridade de gameplay, snapshots ou área de interesse;
@@ -116,7 +120,7 @@ evitando alterar o fluxo atual do cliente.
 1. associar personagens à conta autenticada;
 2. validar nome e seleção no servidor;
 3. criar uma representação própria para servidor, sem câmera, HUD ou input;
-4. autorizar spawn e movimento pelo servidor;
+4. evoluir o protocolo visual inicial para autorizar personagem e movimento;
 5. tratar desconexão e reconexão sem duplicar entidades.
 
 ### Persistência
