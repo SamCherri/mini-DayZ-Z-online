@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://debug/AndroidBootDebug.gd" id="1_boot"]
+
+[node name="AndroidBootDebug" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_boot")
+
+[node name="DebugUI" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Background" type="ColorRect" parent="DebugUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.035, 0.045, 0.06, 1)
+
+[node name="BootPanel" type="PanelContainer" parent="DebugUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -190.0
+offset_right = 270.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="DebugUI/BootPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="DebugUI/BootPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Title" type="Label" parent="DebugUI/BootPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "MiniDayZ Offline Debug"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Status" type="Label" parent="DebugUI/BootPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Boot iniciado"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Build" type="Label" parent="DebugUI/BootPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Build: Android offline debug"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="LoadWorld" type="Button" parent="DebugUI/BootPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Carregar mundo"
+
+[node name="WorldLoadedBadge" type="Label" parent="DebugUI"]
+visible = false
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 292.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0.75, 1, 0.75, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "DEBUG APK: world carregado"
