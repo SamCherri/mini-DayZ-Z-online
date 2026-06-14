@@ -128,7 +128,8 @@ local para resolver UIDs em runners limpos.
 - o teste usa dois clientes no mesmo runner e não representa internet pública,
   Android, latência real ou teste de carga;
 - posições são temporárias, lineares e existem apenas em memória;
-- movimento ainda é informado pelo cliente pelo componente visual existente;
+- o movimento básico agora usa o protocolo autoritativo inicial documentado em
+  [`DEDICATED_MOVEMENT_PROTOCOL.md`](DEDICATED_MOVEMENT_PROTOCOL.md);
 - não há validação de colisão, mapa, reconexão ou restauração;
 - não há entidade de gameplay no processo servidor;
 - `character/player/player.tscn` não é usado nem alterado;

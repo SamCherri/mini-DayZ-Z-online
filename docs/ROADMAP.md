@@ -45,7 +45,8 @@ do anterior e de testes de carga, rede, banco e gameplay.
 - [x] Criar spawn visual simples com avatar temporário para smoke test.
 - [x] Criar spawn points temporários.
 - [x] Automatizar no CI o runtime headless com servidor dedicado e dois clientes.
-- [ ] Validar sincronização de posição básica em duas instâncias.
+- [x] Implementar o movimento básico inicial autorizado pelo servidor dedicado.
+- [ ] Validar visualmente a sincronização de posição básica em duas instâncias.
 - [ ] Sincronizar animação básica.
 - [ ] Testar duas instâncias em localhost ou LAN.
 - [ ] Registrar resultados e limitações do teste.
@@ -58,7 +59,7 @@ host local não será promovido a servidor de produção.
 - [x] Criar a estrutura inicial e a cena executável do servidor headless.
 - [x] Permitir configurar endereço e porta do servidor por argumentos no cliente.
 - [x] Criar o protocolo inicial de spawn/despawn visual autorizado pelo servidor.
-- [ ] Validar em runtime/CI conexão, spawn, desconexão e despawn com dois clientes.
+- [ ] Confirmar no CI conexão, spawn, movimento, desconexão e despawn com dois clientes.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
 - [ ] Fazer o servidor controlar posição, vida e inventário crítico.
@@ -146,8 +147,8 @@ vem depois que o fluxo online dedicado estiver funcional.
 
 ## Prioridade imediata
 
-1. Validar a execução real do protocolo de spawn dedicado com dois clientes.
-2. Concluir o smoke test ENet sem promover o host local a servidor de produção.
+1. Validar visualmente o spawn e movimento dedicado com dois clientes.
+2. Evoluir o movimento sem promover o host local a servidor de produção.
 3. Separar e implantar o processo servidor fora do APK cliente.
 4. Conectar clientes ao servidor dedicado pela internet.
 5. Implementar login e personagem.

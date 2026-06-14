@@ -94,9 +94,11 @@ ServerMain: peer 2 desconectado. Total conectado: 0.
 - `character/player/player.tscn` não é instanciado;
 - o spawn entregue é somente um evento visual temporário autorizado pelo
   servidor, sem entidade final de personagem;
-- não há mapa, movimento, inventário, dano, status, zumbis ou loot no servidor;
+- há somente movimento temporário por intenção e snapshots, sem colisão de
+  mapa; inventário, dano, status, zumbis e loot continuam fora do servidor;
 - não há banco de dados nem acesso a PostgreSQL;
-- não há autoridade de gameplay, snapshots ou área de interesse;
+- não há autoridade completa de gameplay, snapshots avançados ou área de
+  interesse;
 - não há implantação online, métricas ou recuperação automática;
 - o limite padrão de 8 clientes é apenas configuração inicial, não capacidade
   validada;

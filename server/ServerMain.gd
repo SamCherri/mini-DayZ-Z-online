@@ -13,6 +13,8 @@ const PORT_ARGUMENT := "--port"
 const MAX_CLIENTS_ARGUMENT := "--max-clients"
 const SPAWN_ORIGIN := Vector2(160.0, 180.0)
 const SPAWN_OFFSET := Vector2(80.0, 0.0)
+const MOVEMENT_SPEED := 90.0
+const MOVEMENT_STEP_SECONDS := 1.0 / 15.0
 
 var connected_peers: Dictionary = {}
 var server_port := DEFAULT_PORT
@@ -31,6 +33,7 @@ func _ready() -> void:
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	MovementProtocol.movement_input_received.connect(_on_movement_input_received)
 
 	server_port = _read_positive_integer_argument(
 		arguments,
@@ -123,6 +126,37 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	print(
 		"ServerMain: peer %d desconectado. Total conectado: %d."
 		% [peer_id, connected_peers.size()]
+	)
+
+
+func _on_movement_input_received(
+	peer_id: int,
+	direction: Vector2,
+	_sequence: int,
+) -> void:
+	if not connected_peers.has(peer_id):
+		push_warning("ServerMain: input ignorado para peer %d não registrado." % peer_id)
+		return
+
+	var safe_direction := direction.limit_length(1.0)
+	var peer_state: Dictionary = connected_peers[peer_id]
+	var current_position: Vector2 = peer_state["position"]
+	var new_position := (
+		current_position
+		+ safe_direction * MOVEMENT_SPEED * MOVEMENT_STEP_SECONDS
+	)
+	peer_state["position"] = new_position
+	connected_peers[peer_id] = peer_state
+
+	for connected_peer_id: int in connected_peers:
+		MovementProtocol.movement_snapshot.rpc_id(
+			connected_peer_id,
+			peer_id,
+			new_position,
+		)
+	print(
+		"ServerMain: movimento do peer %d calculado na posição %s."
+		% [peer_id, new_position]
 	)
 
 
