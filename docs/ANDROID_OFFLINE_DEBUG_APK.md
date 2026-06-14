@@ -127,3 +127,48 @@ painel aberto e, se possível, capture `adb logcat`. Os logs usam os prefixos
 Se uma versão anterior tiver assinatura diferente, pode ser necessário
 desinstalá-la. Artifacts expiram conforme a política do GitHub; execute o
 workflow novamente quando necessário.
+
+## Atualização visual baseada nos assets do repositório
+
+O `OfflineMvpWorld` é agora a opção principal e jogável. Ele permanece isolado
+do gameplay definitivo, mas usa sprites já versionados no projeto para que o
+teste se pareça com um protótipo visual do jogo, e não com uma coleção de
+formas geométricas. O botão secundário **Carregar world.tscn original** existe
+somente para diagnóstico; essa cena pode continuar incompleta ou visualmente
+vazia e não é uma dependência do MVP.
+
+Os caminhos ficam centralizados em
+`res://debug/OfflineMvpAssetCatalog.gd`. Atualmente são usados:
+
+- `player_skin_def_1.png` para o personagem;
+- skins normal, fast e tank para cinco zumbis fake;
+- árvores de folhas e pinheiros para mais de 20 pontos de vegetação;
+- casa, posto, galpão e hospital;
+- carro, barricada e caixa de loot do bunker;
+- botões de ataque/inventário e imagens do dpad mobile.
+
+O terreno mantém uma base procedural em paleta escura, manchas de terra e
+estradas. Os arquivos `ground_tilemap`, `ground_enviroment_tilemap`, forest e
+bunker são atlas e não são exibidos inteiros; transformar esses atlas em um
+`TileSet` correto fica para uma etapa própria. Se qualquer textura deixar de
+existir ou falhar na importação, o catálogo registra o fallback e o nó mantém
+uma representação debug segura. O overlay informa o estado do asset do player,
+dos zumbis e da UI touch. Consulte `debug/ASSET_AUDIT_OFFLINE_MVP.md` para a
+lista e as decisões completas.
+
+### Checklist atualizado para teste no celular
+
+- [ ] A tela inicial permanece manual, sem carregar automaticamente.
+- [ ] **Carregar MVP offline** abre terreno, estrada e cenário, sem tela cinza.
+- [ ] O player aparece como sprite e vira horizontalmente ao mudar de direção.
+- [ ] O joystick move o player e a câmera acompanha.
+- [ ] Árvores, construções, carro e obstáculos aparecem com sprites reais.
+- [ ] Cinco zumbis aparecem, patrulham e avisam **Zumbi próximo**.
+- [ ] Próximo de uma caixa aparece **Caixa próxima**.
+- [ ] **Ação** mostra **Interagiu com caixa** e destaca a caixa.
+- [ ] **Inventário** mostra **Inventário debug**.
+- [ ] O painel identifica assets reais ou fallback sem encerrar o jogo.
+- [ ] **Carregar world.tscn original** permanece disponível para diagnóstico.
+
+Este MVP não lê CSVs e não instancia inventário, loot, zumbis, status ou player
+definitivos. A validação continua sendo visual e de controles para APK interno.

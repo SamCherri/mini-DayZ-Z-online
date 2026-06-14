@@ -57,7 +57,7 @@ grow_vertical = 0
 mouse_filter = 0
 clip_contents = true
 
-[node name="Base" type="ColorRect" parent="UI/JoystickArea"]
+[node name="Base" type="TextureRect" parent="UI/JoystickArea"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,7 +65,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.08, 0.12, 0.16, 0.72)
+modulate = Color(1, 1, 1, 0.72)
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Hint" type="Label" parent="UI/JoystickArea"]
 layout_mode = 1
@@ -81,15 +83,17 @@ text = "JOYSTICK"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Knob" type="ColorRect" parent="UI/JoystickArea"]
-custom_minimum_size = Vector2(70, 70)
+[node name="Knob" type="TextureRect" parent="UI/JoystickArea"]
+custom_minimum_size = Vector2(76, 76)
 layout_mode = 0
-offset_left = 70.0
-offset_top = 70.0
-offset_right = 140.0
-offset_bottom = 140.0
+offset_left = 67.0
+offset_top = 67.0
+offset_right = 143.0
+offset_bottom = 143.0
 mouse_filter = 2
-color = Color(0.2, 0.85, 1, 0.9)
+modulate = Color(1, 1, 1, 0.92)
+expand_mode = 1
+stretch_mode = 5
 
 [node name="InventoryButton" type="Button" parent="UI"]
 custom_minimum_size = Vector2(190, 72)
@@ -108,6 +112,20 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 21
 text = "Inventário"
 
+[node name="Icon" type="TextureRect" parent="UI/InventoryButton"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -27.0
+offset_right = 62.0
+offset_bottom = 27.0
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ActionButton" type="Button" parent="UI"]
 custom_minimum_size = Vector2(190, 112)
 layout_mode = 1
@@ -124,3 +142,17 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 27
 text = "Ação"
+
+[node name="Icon" type="TextureRect" parent="UI/ActionButton"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -38.0
+offset_right = 84.0
+offset_bottom = 38.0
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5

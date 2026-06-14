@@ -80,7 +80,13 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(0, 82)
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
-text = "Carregar mundo"
+text = "Carregar MVP offline"
+
+[node name="LoadOriginalWorld" type="Button" parent="DebugUI/BootPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Carregar world.tscn original"
 
 [node name="DebugPanel" type="PanelContainer" parent="DebugUI"]
 visible = false
