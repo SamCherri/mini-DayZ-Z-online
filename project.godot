@@ -13,12 +13,12 @@ config_version=5
 config/name="miniday"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
-run/main_scene="uid://b3rbvu3iaughq"
+run/main_scene="res://world.tscn"
 
 [autoload]
 
-PlayerStatus="*uid://bpminso8td3ev"
-ItemActionTable="*uid://3dyxqxf23328"
+PlayerStatus="*res://status/player_status.gd"
+ItemActionTable="*res://item/item_action_table.gd"
 NetworkManager="*res://multiplayer/NetworkManager.gd"
 SpawnProtocol="*res://multiplayer/SpawnProtocol.gd"
 

@@ -15,6 +15,10 @@ const SERVER_PEER_ID := 1
 func spawn_peer(peer_id: int, position: Vector2) -> void:
 	if not _is_valid_server_message(peer_id):
 		return
+	print(
+		"SpawnProtocol: evento de spawn recebido para peer %d na posição %s."
+		% [peer_id, position]
+	)
 	spawn_peer_received.emit(peer_id, position)
 
 
@@ -22,6 +26,7 @@ func spawn_peer(peer_id: int, position: Vector2) -> void:
 func despawn_peer(peer_id: int) -> void:
 	if not _is_valid_server_message(peer_id):
 		return
+	print("SpawnProtocol: evento de despawn recebido para peer %d." % peer_id)
 	despawn_peer_received.emit(peer_id)
 
 
