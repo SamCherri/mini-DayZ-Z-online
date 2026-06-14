@@ -7,6 +7,10 @@ required_files=(
   "world.tscn"
   "debug/AndroidBootDebug.gd"
   "debug/AndroidBootDebug.tscn"
+  "debug/OfflineDebugPlayer.gd"
+  "debug/OfflineDebugPlayer.tscn"
+  "debug/MobileDebugControls.gd"
+  "debug/MobileDebugControls.tscn"
 )
 
 for required_file in "${required_files[@]}"; do

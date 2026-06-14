@@ -1,0 +1,126 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://debug/MobileDebugControls.gd" id="1_controls"]
+
+[node name="MobileDebugControls" type="CanvasLayer"]
+layer = 90
+script = ExtResource("1_controls")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TouchEnabled" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 310.0
+offset_right = 310.0
+offset_bottom = 344.0
+theme_override_colors/font_color = Color(0.4, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 19
+text = "DEBUG TOUCH ENABLED"
+
+[node name="Feedback" type="Label" parent="UI"]
+layout_mode = 0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Touch pronto"
+horizontal_alignment = 2
+
+[node name="JoystickArea" type="Control" parent="UI"]
+custom_minimum_size = Vector2(210, 210)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -234.0
+offset_right = 234.0
+offset_bottom = -24.0
+grow_vertical = 0
+mouse_filter = 0
+clip_contents = true
+
+[node name="Base" type="ColorRect" parent="UI/JoystickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.16, 0.72)
+
+[node name="Hint" type="Label" parent="UI/JoystickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.55, 0.7, 0.8, 1)
+theme_override_font_sizes/font_size = 20
+text = "JOYSTICK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Knob" type="ColorRect" parent="UI/JoystickArea"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 70.0
+offset_right = 140.0
+offset_bottom = 140.0
+mouse_filter = 2
+color = Color(0.2, 0.85, 1, 0.9)
+
+[node name="InventoryButton" type="Button" parent="UI"]
+custom_minimum_size = Vector2(190, 72)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -226.0
+offset_right = -24.0
+offset_bottom = -154.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 21
+text = "Inventário"
+
+[node name="ActionButton" type="Button" parent="UI"]
+custom_minimum_size = Vector2(190, 112)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -136.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 27
+text = "Ação"
