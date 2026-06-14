@@ -1,0 +1,16 @@
+[Unit]
+Description=Mini DayZ Z Online RP dedicated server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/minidayz-online
+Environment=GODOT_BIN=/usr/local/bin/godot
+Environment=PORT=7000
+Environment=MAX_CLIENTS=8
+ExecStart=/opt/minidayz-online/scripts/run_dedicated_server.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

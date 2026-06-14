@@ -63,6 +63,8 @@ host local não será promovido a servidor de produção.
 - [x] Criar personagem RP temporário em memória antes de liberar spawn e movimento.
 - [x] Separar por `--dedicated-client` o cliente dedicado do smoke host/client
   local, sem spawn provisório antes de sessão e personagem.
+- [x] Criar runner operacional e exemplo de serviço para executar o processo
+  dedicado em Linux, sem implantar uma VPS.
 - [ ] Confirmar no CI conexão, spawn, movimento, desconexão e despawn com dois clientes.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.

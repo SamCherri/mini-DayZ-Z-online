@@ -35,15 +35,17 @@ jobs:
           godot --version
 
       - name: Importar projeto Godot
-        run: godot --headless --path . --import --quit
+        run: ./scripts/import_godot_project.sh
 
       - name: Executar servidor e dois clientes headless
         run: ./scripts/smoke_test_dedicated_spawn.sh
 
-      - name: Publicar logs do runtime
+      - name: Publicar logs do import e runtime
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: godot-dedicated-spawn-logs
-          path: artifacts/godot-smoke-test/*.log
+          path: |
+            artifacts/godot-import/*.log
+            artifacts/godot-smoke-test/*.log
           if-no-files-found: warn
