@@ -105,7 +105,7 @@ func _on_action_up() -> void:
 
 func _on_inventory_down() -> void:
 	Input.action_press("toggle_inventory")
-	feedback_label.text = "Inventário pressionado"
+	feedback_label.text = "Inventário debug"
 	print("[MobileDebugControls] inventário pressionado")
 
 

@@ -12,6 +12,16 @@ script = ExtResource("1_player")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape_player")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = true
+zoom = Vector2(1.4, 1.4)
+limit_left = 0
+limit_top = 0
+limit_right = 3000
+limit_bottom = 3000
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
 [node name="Label" type="Label" parent="."]
 offset_left = -76.0
 offset_top = -61.0
