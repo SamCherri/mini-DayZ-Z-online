@@ -1,0 +1,37 @@
+# Godot 4+
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Godot generated files
+*.translation
+*.import
+
+# Android/export artifacts
+*.apk
+*.aab
+*.keystore
+*.jks
+android/build/
+build/
+dist/
+exports/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.tmp
+
+# Logs
+*.log
+logs/
+
+# Local secrets/config
+.env
+.env.*
+secrets.json
+local_config.json
