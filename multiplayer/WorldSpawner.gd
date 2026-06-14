@@ -51,6 +51,9 @@ func _spawn_player(peer_id: int) -> void:
 
 
 func _spawn_authorized_peer(peer_id: int, position: Vector2) -> void:
+	# Fallback defensivo para clientes antigos que tenham criado avatares locais
+	# antes de receber o primeiro evento dedicado. Clientes iniciados com
+	# --dedicated-client não dependem desta limpeza no fluxo normal.
 	if not _dedicated_protocol_active:
 		_dedicated_protocol_active = true
 		for child in _players.get_children():

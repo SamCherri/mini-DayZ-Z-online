@@ -25,6 +25,7 @@ const DEFAULT_PORT := 7000
 const DEFAULT_MAX_CLIENTS := 8
 const SERVER_PEER_ID := 1
 const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
+const DEDICATED_CLIENT_ARGUMENT := "--dedicated-client"
 const CONNECT_ARGUMENT := "--connect"
 const PORT_ARGUMENT := "--port"
 const TEST_NAME_ARGUMENT := "--test-name"
@@ -102,6 +103,10 @@ func disconnect_from_session() -> void:
 
 func is_session_active() -> bool:
 	return connection_state != ConnectionState.OFFLINE
+
+
+func _is_dedicated_client_mode() -> bool:
+	return DEDICATED_CLIENT_ARGUMENT in OS.get_cmdline_user_args()
 
 
 func _start_from_command_line() -> void:
@@ -190,11 +195,14 @@ func _on_peer_disconnected(peer_id: int) -> void:
 func _on_connected_to_server() -> void:
 	_set_connection_state(ConnectionState.CONNECTED)
 	peer_connected.emit(SERVER_PEER_ID)
+	if _is_dedicated_client_mode():
+		var display_name := _read_test_name_argument(OS.get_cmdline_user_args())
+		SessionProtocol.request_session.rpc_id(SERVER_PEER_ID, display_name)
+		print("NetworkManager: solicitando sessão temporária como %s." % display_name)
+		return
+
 	player_spawn_requested.emit(SERVER_PEER_ID)
 	player_spawn_requested.emit(multiplayer.get_unique_id())
-	var display_name := _read_test_name_argument(OS.get_cmdline_user_args())
-	SessionProtocol.request_session.rpc_id(SERVER_PEER_ID, display_name)
-	print("NetworkManager: solicitando sessão temporária como %s." % display_name)
 
 
 func _on_session_accepted(peer_id: int, _display_name: String) -> void:

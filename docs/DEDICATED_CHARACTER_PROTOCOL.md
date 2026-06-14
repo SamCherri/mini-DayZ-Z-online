@@ -24,6 +24,12 @@ pelo servidor. Após a sessão ser aceita, o cliente chama:
 request_temporary_character(first_name, last_name)
 ```
 
+Esse encadeamento automático pertence ao modo iniciado com
+`--connect ... --dedicated-client`. Nesse modo, o `NetworkManager` não emite
+pedidos de spawn local ao conectar. O avatar só nasce após o aceite do
+personagem, quando o servidor envia o evento correspondente por
+`SpawnProtocol`.
+
 O cliente não envia `peer_id`. O servidor identifica o remetente real com
 `multiplayer.get_remote_sender_id()`, valida nome e sobrenome e emite
 `temporary_character_requested(peer_id, first_name, last_name)`.

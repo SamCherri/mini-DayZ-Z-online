@@ -16,7 +16,8 @@ token de autenticação ou banco de dados nesta camada.
 `multiplayer/SessionProtocol.gd` é registrado como autoload no cliente e no
 servidor. O fluxo usa RPCs confiáveis:
 
-1. depois de conectar, o cliente chama `request_session(display_name)`;
+1. depois de conectar com `--dedicated-client`, o cliente chama
+   `request_session(display_name)`;
 2. o RPC não aceita um `peer_id` escolhido pelo cliente;
 3. o servidor identifica a conexão com
    `multiplayer.get_remote_sender_id()`;
@@ -89,13 +90,18 @@ O teste automatizado inicia os clientes assim:
 
 ```bash
 godot --headless --path . -- \
-  --connect 127.0.0.1 --port 7000 --test-name SessionOne \
+  --connect 127.0.0.1 --port 7000 --dedicated-client --test-name SessionOne \
   --test-first-name Client --test-last-name One --test-move
 
 godot --headless --path . -- \
-  --connect 127.0.0.1 --port 7000 --test-name SessionTwo \
+  --connect 127.0.0.1 --port 7000 --dedicated-client --test-name SessionTwo \
   --test-first-name Client --test-last-name Two
 ```
+
+Sem `--dedicated-client`, `--connect` preserva o smoke test técnico antigo do
+host local e seus sinais de spawn legados. No modo dedicado, nenhum avatar é
+criado pela conexão: a representação visual aguarda sessão, personagem e o
+evento autorizado de `SpawnProtocol`.
 
 Se `--test-name` não for informado, o cliente usa temporariamente
 `Guest<peer_id>`, por exemplo `Guest2`. Uma interface futura deverá substituir
