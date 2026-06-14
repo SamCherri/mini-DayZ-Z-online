@@ -35,9 +35,14 @@ de teste e não deve ser usada para uma futura versão pública.
 5. Aguarde a execução ficar verde.
 
 O workflow baixa o Godot 4.6 e seus templates de exportação Android, importa o
-projeto com `scripts/import_godot_project.sh`, gera
+projeto com `scripts/import_godot_project.sh`, grava a configuração Android do
+editor diretamente com `scripts/configure_android_export_settings.sh`, gera
 `minidayz-offline-debug.apk` e publica o artifact
 `minidayz-offline-debug-apk`.
+
+Essa configuração não carrega o projeto nem executa um script GDScript. O
+script shell valida o Android SDK, o Java e a chave debug e então cria
+`${HOME}/.config/godot/editor_settings-4.tres` no runner.
 
 Durante a importação, o CI salva o log original e uma cópia normalizada, sem
 carriage returns e códigos ANSI, no artifact `godot-android-import-logs`.
