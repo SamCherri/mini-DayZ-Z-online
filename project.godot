@@ -21,6 +21,7 @@ PlayerStatus="*res://status/player_status.gd"
 ItemActionTable="*res://item/item_action_table.gd"
 NetworkManager="*res://multiplayer/NetworkManager.gd"
 SpawnProtocol="*res://multiplayer/SpawnProtocol.gd"
+MovementProtocol="*res://multiplayer/MovementProtocol.gd"
 
 [debug]
 

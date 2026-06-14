@@ -38,6 +38,7 @@ func _ready() -> void:
 	NetworkManager.player_despawn_requested.connect(_despawn_player)
 	SpawnProtocol.spawn_peer_received.connect(_spawn_authorized_peer)
 	SpawnProtocol.despawn_peer_received.connect(_despawn_player)
+	MovementProtocol.movement_snapshot_received.connect(_apply_movement_snapshot)
 
 
 func _spawn_player(peer_id: int) -> void:
@@ -85,6 +86,17 @@ func _despawn_player(peer_id: int) -> void:
 	var avatar := _players.get_node_or_null(_avatar_name(peer_id))
 	if avatar != null:
 		avatar.queue_free()
+
+
+func _apply_movement_snapshot(peer_id: int, position: Vector2) -> void:
+	if _players == null:
+		return
+
+	var avatar := _players.get_node_or_null(_avatar_name(peer_id)) as SimpleAvatar
+	if avatar == null:
+		push_warning("WorldSpawner: snapshot recebido antes do spawn do peer %d." % peer_id)
+		return
+	avatar.apply_server_snapshot(position)
 
 
 func _avatar_name(peer_id: int) -> String:

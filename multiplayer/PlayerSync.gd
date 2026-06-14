@@ -16,6 +16,7 @@ var _remote_position := Vector2.ZERO
 var _remote_rotation := 0.0
 var _send_accumulator := 0.0
 var _has_remote_snapshot := false
+var _server_authoritative := false
 
 
 func _ready() -> void:
@@ -33,8 +34,17 @@ func configure_authority(peer_id: int) -> void:
 	set_multiplayer_authority(peer_id)
 
 
+func configure_server_authoritative(enabled: bool) -> void:
+	_server_authoritative = enabled
+
+
+func apply_server_snapshot(position: Vector2) -> void:
+	_remote_position = position
+	_has_remote_snapshot = true
+
+
 func _process(delta: float) -> void:
-	if is_multiplayer_authority():
+	if is_multiplayer_authority() and not _server_authoritative:
 		_send_accumulator += delta
 		var update_interval := 1.0 / updates_per_second
 		if _send_accumulator >= update_interval:

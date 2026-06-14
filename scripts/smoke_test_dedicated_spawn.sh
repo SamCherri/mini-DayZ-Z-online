@@ -94,10 +94,12 @@ wait_for_log "${SERVER_LOG}" "ServerMain: servidor dedicado iniciado"
 
 printf 'Iniciando cliente 1...\n'
 "${GODOT_BIN}" --headless --path . -- \
-	--connect 127.0.0.1 --port "${PORT}" >"${CLIENT_ONE_LOG}" 2>&1 &
+	--connect 127.0.0.1 --port "${PORT}" --test-move >"${CLIENT_ONE_LOG}" 2>&1 &
 CLIENT_ONE_PID=$!
 wait_for_count "${SERVER_LOG}" "conectado. Total conectado:" 1
 wait_for_count "${CLIENT_ONE_LOG}" "SpawnProtocol: evento de spawn recebido" 1
+wait_for_log "${SERVER_LOG}" "ServerMain: movimento do peer"
+wait_for_log "${CLIENT_ONE_LOG}" "MovementProtocol: snapshot recebido"
 
 printf 'Iniciando cliente 2...\n'
 "${GODOT_BIN}" --headless --path . -- \
@@ -120,5 +122,5 @@ if ! kill -0 "${SERVER_PID}" 2>/dev/null || ! kill -0 "${CLIENT_TWO_PID}" 2>/dev
 	exit 1
 fi
 
-printf 'Smoke test concluído: servidor, dois clientes, spawn, desconexão e despawn validados.\n'
+printf 'Smoke test concluído: servidor, dois clientes, spawn, movimento, desconexão e despawn validados.\n'
 printf 'Logs disponíveis em %s\n' "${LOG_DIR}"
