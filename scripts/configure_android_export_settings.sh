@@ -9,7 +9,9 @@ fi
 JAVA_PATH="${JAVA_HOME:-}"
 KEYSTORE_PATH="${HOME}/.android/debug.keystore"
 SETTINGS_DIR="${HOME}/.config/godot"
-SETTINGS_FILE="${SETTINGS_DIR}/editor_settings-4.tres"
+GODOT_SETTINGS_VERSION="${GODOT_VERSION:-4.6}"
+SETTINGS_FILE="${SETTINGS_DIR}/editor_settings-${GODOT_SETTINGS_VERSION}.tres"
+LEGACY_SETTINGS_FILE="${SETTINGS_DIR}/editor_settings-4.tres"
 
 if [[ -z "${SDK_PATH}" || ! -d "${SDK_PATH}" ]]; then
   echo "Erro: Android SDK não encontrado: ${SDK_PATH}" >&2
@@ -39,7 +41,16 @@ export/android/debug_keystore_user = "androiddebugkey"
 export/android/debug_keystore_pass = "android"
 EOF_SETTINGS
 
+cp "${SETTINGS_FILE}" "${LEGACY_SETTINGS_FILE}"
+
 echo "EditorSettings Android configurado em: ${SETTINGS_FILE}"
+echo "Cópia de compatibilidade configurada em: ${LEGACY_SETTINGS_FILE}"
 echo "SDK: ${SDK_PATH}"
 echo "Java: ${JAVA_PATH}"
 echo "Keystore: ${KEYSTORE_PATH}"
+
+echo "Arquivos em ${SETTINGS_DIR}:"
+ls -la "${SETTINGS_DIR}"
+
+echo "EditorSettings Android gerado (senha omitida):"
+grep -v 'debug_keystore_pass' "${SETTINGS_FILE}" || true
