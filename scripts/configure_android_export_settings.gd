@@ -30,7 +30,7 @@ func _init() -> void:
 		quit(1)
 		return
 
-	var editor_settings := EditorInterface.get_editor_settings()
+	var editor_settings := EditorSettings.get_singleton()
 	if editor_settings == null:
 		push_error("Não foi possível acessar EditorSettings.")
 		quit(1)

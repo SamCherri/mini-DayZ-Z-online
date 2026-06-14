@@ -92,11 +92,12 @@ jobs:
               -dname "CN=Android Debug,O=Android,C=US"
           fi
 
-      - name: Configurar export Android no Godot
-        run: godot --headless --path . --script scripts/configure_android_export_settings.gd
-
       - name: Importar projeto Godot
         run: ./scripts/import_godot_project.sh
+
+      - name: Configurar export Android no Godot
+        timeout-minutes: 3
+        run: godot --headless --path . --script scripts/configure_android_export_settings.gd
 
       - name: Exportar APK Android debug offline
         shell: bash
