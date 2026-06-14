@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://debug/OfflineMvpZombie.gd" id="1_zombie"]
+
+[node name="OfflineMvpZombie" type="Node2D"]
+z_index = 55
+script = ExtResource("1_zombie")
+
+[node name="Visual" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -18)
+
+[node name="FallbackLabel" type="Label" parent="."]
+offset_left = -58.0
+offset_top = -58.0
+offset_right = 58.0
+offset_bottom = -34.0
+theme_override_colors/font_color = Color(1, 0.82, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 15
+text = "ZED DEBUG"
+horizontal_alignment = 1

@@ -1,12 +1,17 @@
 extends CanvasLayer
 
+const AssetCatalog := preload("res://debug/OfflineMvpAssetCatalog.gd")
 const MOVEMENT_ACTIONS := ["move_left", "move_right", "move_up", "move_down"]
 
 @onready var joystick_area: Control = $UI/JoystickArea
 @onready var joystick_knob: Control = $UI/JoystickArea/Knob
+@onready var joystick_base: TextureRect = $UI/JoystickArea/Base
 @onready var action_button: Button = $UI/ActionButton
 @onready var inventory_button: Button = $UI/InventoryButton
+@onready var action_icon: TextureRect = $UI/ActionButton/Icon
+@onready var inventory_icon: TextureRect = $UI/InventoryButton/Icon
 @onready var feedback_label: Label = $UI/Feedback
+@onready var touch_status: Label = $UI/TouchEnabled
 
 var touch_index := -1
 var joystick_center := Vector2.ZERO
@@ -17,6 +22,7 @@ var last_logged_direction := Vector2.ZERO
 func _ready() -> void:
 	_ensure_action("interact")
 	_ensure_action("toggle_inventory")
+	var real_asset_count := _apply_visual_assets()
 	joystick_area.gui_input.connect(_on_joystick_input)
 	action_button.button_down.connect(_on_action_down)
 	action_button.button_up.connect(_on_action_up)
@@ -24,7 +30,31 @@ func _ready() -> void:
 	inventory_button.button_up.connect(_on_inventory_up)
 	joystick_center = joystick_area.size * 0.5
 	joystick_knob.position = joystick_center - joystick_knob.size * 0.5
-	print("[MobileDebugControls] overlay touch carregado")
+	touch_status.text = "Touch UI: %s" % ("real" if real_asset_count == 4 else "fallback parcial")
+	print("[MobileDebugControls] overlay touch carregado com %d/4 assets reais" % real_asset_count)
+
+
+func _apply_visual_assets() -> int:
+	var applied := 0
+	var base_texture := AssetCatalog.load_texture(AssetCatalog.UI_JOYSTICK_BASE, "base do joystick")
+	if base_texture != null:
+		joystick_base.texture = base_texture
+		applied += 1
+	var stick_texture := AssetCatalog.load_texture(AssetCatalog.UI_JOYSTICK_STICK, "knob do joystick")
+	if stick_texture != null and joystick_knob is TextureRect:
+		(joystick_knob as TextureRect).texture = stick_texture
+		applied += 1
+	var attack_texture := AssetCatalog.load_texture(AssetCatalog.UI_ATTACK_BUTTON, "botão de ataque")
+	if attack_texture != null:
+		action_icon.texture = attack_texture
+		applied += 1
+	var inventory_texture := AssetCatalog.load_texture(
+		AssetCatalog.UI_INVENTORY_BUTTON, "botão de inventário"
+	)
+	if inventory_texture != null:
+		inventory_icon.texture = inventory_texture
+		applied += 1
+	return applied
 
 
 func _exit_tree() -> void:
