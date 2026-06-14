@@ -1,4 +1,22 @@
-[gd_scene format=3 uid="uid://b3rbvu3iaughq"]
+[gd_scene load_steps=3 format=3 uid="uid://b3rbvu3iaughq"]
+
+[ext_resource type="Script" path="res://multiplayer/WorldSpawner.gd" id="1_spawner"]
+[ext_resource type="PackedScene" path="res://multiplayer/simple_avatar.tscn" id="2_avatar"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
+
+[node name="Players" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(160, 180)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(320, 180)
+
+[node name="WorldSpawner" type="Node" parent="."]
+script = ExtResource("1_spawner")
+avatar_scene = ExtResource("2_avatar")

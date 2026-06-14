@@ -42,9 +42,10 @@ do anterior e de testes de carga, rede, banco e gameplay.
 - [x] Criar `NetworkManager.gd`.
 - [x] Criar fluxo host/client ENet para testes.
 - [x] Preparar sinais de entrada e saída de jogadores.
-- [ ] Sincronizar posição básica.
+- [x] Criar spawn visual simples com avatar temporário para smoke test.
+- [x] Criar spawn points temporários.
+- [ ] Validar sincronização de posição básica em duas instâncias.
 - [ ] Sincronizar animação básica.
-- [ ] Criar spawn points temporários.
 - [ ] Testar duas instâncias em localhost ou LAN.
 - [ ] Registrar resultados e limitações do teste.
 

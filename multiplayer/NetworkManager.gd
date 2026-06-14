@@ -186,6 +186,8 @@ func _on_peer_disconnected(peer_id: int) -> void:
 func _on_connected_to_server() -> void:
 	_set_connection_state(ConnectionState.CONNECTED)
 	peer_connected.emit(SERVER_PEER_ID)
+	player_spawn_requested.emit(SERVER_PEER_ID)
+	player_spawn_requested.emit(multiplayer.get_unique_id())
 
 
 func _on_connection_failed() -> void:
@@ -195,6 +197,10 @@ func _on_connection_failed() -> void:
 
 
 func _on_server_disconnected() -> void:
+	var local_peer_id := multiplayer.get_unique_id()
+	player_despawn_requested.emit(SERVER_PEER_ID)
+	if local_peer_id != SERVER_PEER_ID:
+		player_despawn_requested.emit(local_peer_id)
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	_set_connection_state(ConnectionState.OFFLINE)
 	peer_disconnected.emit(SERVER_PEER_ID)
