@@ -1,0 +1,17 @@
+[gd_scene format=3 format=3 uid="uid://bwk1r1ou8750n"]
+
+[ext_resource type="PackedScene" uid="uid://d0g2x7l1jodnh" path="res://mechanics/interaction_area.tscn" id="1_iwhpl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mtdfk"]
+radius = 3.0
+height = 12.0
+
+[node name="Item" type="Sprite2D"]
+z_index = -1
+
+[node name="InteractionArea" parent="." instance=ExtResource("1_iwhpl")]
+owner_type = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_mtdfk")

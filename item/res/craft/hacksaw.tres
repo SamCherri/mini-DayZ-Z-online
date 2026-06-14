@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DurabilityItemResource" format=3 uid="uid://b2lci1tjaehje"]
+
+[ext_resource type="Script" uid="uid://cex83hv3yxo1w" path="res://item/res/script/durability_item_resource.gd" id="1_2xt6c"]
+[ext_resource type="Texture2D" uid="uid://0wadyfl2p23o" path="res://asset/images/item/hacksaw.png" id="2_8squj"]
+
+[resource]
+script = ExtResource("1_2xt6c")
+wear_per_use = 10.0
+id = 90
+item_name = &"Hacksaw"
+texture = ExtResource("2_8squj")

@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://b3rbvu3iaughq"]
+
+[node name="World" type="Node2D"]
+y_sort_enabled = true

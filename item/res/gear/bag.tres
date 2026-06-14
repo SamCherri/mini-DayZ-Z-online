@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GearResource" format=3 uid="uid://d0rd0ajiybvkp"]
+
+[ext_resource type="Script" uid="uid://c0dpwv07k6wum" path="res://item/res/script/gear_resource.gd" id="1_4loj3"]
+[ext_resource type="Texture2D" uid="uid://dxhpyqt6ionj2" path="res://asset/images/equipment/backpack/bag.png" id="2_mfptq"]
+
+[resource]
+script = ExtResource("1_4loj3")
+type = 4
+slot_number = 3
+id = 48
+item_name = &"Bag"
+texture = ExtResource("2_mfptq")

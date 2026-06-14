@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MeleeWeaponResource" format=3 uid="uid://clj4fa73ty1ap"]
+
+[ext_resource type="Script" uid="uid://jlepxj6nyo1i" path="res://item/res/script/melee_weapon_resource.gd" id="1_aaykb"]
+[ext_resource type="Texture2D" uid="uid://ct57wuigxfkic" path="res://asset/images/equipment/weapon/melee/hatchet.png" id="2_tl4gj"]
+
+[resource]
+script = ExtResource("1_aaykb")
+crit_chance = 0.25
+block_chance = 0.15
+min_damage = 33
+max_damage = 37
+run_penalty = 2
+attack_rate = 1.0
+wear_per_use = 0.2
+id = 1
+item_name = &"Baseball bat"
+texture = ExtResource("2_tl4gj")
