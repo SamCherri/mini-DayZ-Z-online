@@ -26,6 +26,9 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Instalar Godot 4.6
         shell: bash
         run: |
@@ -56,7 +59,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-}"
+          ls -la "${ANDROID_HOME}/cmdline-tools" || true
+
+          SDKMANAGER="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "${SDKMANAGER}" ]]; then
+            SDKMANAGER="$(command -v sdkmanager || true)"
+          fi
+
+          if [[ -z "${SDKMANAGER}" || ! -x "${SDKMANAGER}" ]]; then
+            echo "Erro: sdkmanager não encontrado." >&2
+            exit 127
+          fi
+
+          yes | "${SDKMANAGER}" --licenses >/dev/null || true
+          "${SDKMANAGER}" \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
+
           mkdir -p "${HOME}/.android"
           if [[ ! -f "${HOME}/.android/debug.keystore" ]]; then
             keytool -genkeypair -v \
