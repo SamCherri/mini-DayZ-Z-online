@@ -18,7 +18,7 @@ run/main_scene="res://world.tscn"
 [autoload]
 
 PlayerStatus="*res://status/player_status.gd"
-ItemActionTable="*res://item/item_action_table.gd"
+ItemActionTable="*res://item/item_action_table_autoload.gd"
 NetworkManager="*res://multiplayer/NetworkManager.gd"
 SessionProtocol="*res://multiplayer/SessionProtocol.gd"
 SpawnProtocol="*res://multiplayer/SpawnProtocol.gd"

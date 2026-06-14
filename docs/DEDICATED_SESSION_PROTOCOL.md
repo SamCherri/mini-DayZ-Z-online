@@ -104,6 +104,28 @@ O CI aguarda primeiro:
 
 Somente depois valida spawn, movimento, desconexão e despawn.
 
+### Inicialização isolada do inventário
+
+O autoload `ItemActionTable` aponta para
+`item/item_action_table_autoload.gd`. Essa fachada não carrega receitas,
+classes de item ou texturas durante o boot. No cliente normal, a implementação
+original é carregada sob demanda quando a interface chama uma operação real de
+inventário ou crafting. No processo com `--dedicated-server`, essas operações
+retornam valores vazios seguros porque o servidor deste marco não usa
+inventário.
+
+Essa separação não remove receitas nem muda o inventário do jogo. Ela apenas
+impede que recursos de gameplay fora do escopo bloqueiem o smoke test de
+sessão, spawn e movimento.
+
+Os arquivos ocultos de munição `.22lr_ammo.png`, `.45_acp_ammo.png` e
+`.357_ammo.png` foram verificados e estão versionados como PNGs válidos em
+`asset/images/item/`. Os respectivos `.import` não são versionados porque o
+`.gitignore` exclui arquivos gerados pelo Godot. Como nomes iniciados por ponto
+podem exigir tratamento futuro na importação de assets, nenhuma imagem foi
+substituída nesta correção; o isolamento lazy evita que elas sejam exigidas
+pelo servidor dedicado atual.
+
 ## Limitações e próximos passos
 
 Esta camada não oferece segurança de conta:

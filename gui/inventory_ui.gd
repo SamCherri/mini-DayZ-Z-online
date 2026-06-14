@@ -155,7 +155,7 @@ func handle_item_ui_dropped(ui_replaced, ui_from) -> void:
 func is_slot_item_ui(ui: Variant) -> bool:
 	return ui is ItemUI and ui.equipment_type == EQUIPMENT_TYPE.SIMPLE_ITEM
 
-func toggle_item_menu(ui_id: int, g_position: Vector2, title: StringName, options: Array[ItemActionTable.ItemAction]) -> void:
+func toggle_item_menu(ui_id: int, g_position: Vector2, title: StringName, options: Array) -> void:
 	if not item_menu.visible or item_menu.get_meta('ui_id', -1) != ui_id:
 		item_menu.set_active(ui_id, g_position, title, options)
 		item_menu.visible = true

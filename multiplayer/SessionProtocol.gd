@@ -12,10 +12,6 @@ signal session_rejected(reason: String)
 const SERVER_PEER_ID := 1
 const MIN_DISPLAY_NAME_LENGTH := 3
 const MAX_DISPLAY_NAME_LENGTH := 20
-const INVALID_NAME_REASON := (
-	"O nome deve ter entre %d e %d caracteres e usar apenas letras, números ou _."
-	% [MIN_DISPLAY_NAME_LENGTH, MAX_DISPLAY_NAME_LENGTH]
-)
 
 var _display_name_pattern := RegEx.new()
 
@@ -70,15 +66,22 @@ func reject_session(reason: String) -> void:
 
 func validate_display_name(display_name: String) -> String:
 	if display_name.is_empty():
-		return INVALID_NAME_REASON
+		return _invalid_name_reason()
 	if (
 		display_name.length() < MIN_DISPLAY_NAME_LENGTH
 		or display_name.length() > MAX_DISPLAY_NAME_LENGTH
 	):
-		return INVALID_NAME_REASON
+		return _invalid_name_reason()
 	if _display_name_pattern.search(display_name) == null:
-		return INVALID_NAME_REASON
+		return _invalid_name_reason()
 	return ""
+
+
+func _invalid_name_reason() -> String:
+	return (
+		"O nome deve ter entre %d e %d caracteres e usar apenas letras, números ou _."
+		% [MIN_DISPLAY_NAME_LENGTH, MAX_DISPLAY_NAME_LENGTH]
+	)
 
 
 func _is_valid_server_response() -> bool:
