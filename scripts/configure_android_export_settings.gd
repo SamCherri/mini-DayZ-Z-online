@@ -30,12 +30,18 @@ func _init() -> void:
 		quit(1)
 		return
 
-	EditorSettings.set_setting("export/android/android_sdk_path", sdk_path)
-	EditorSettings.set_setting("export/android/java_sdk_path", java_path)
-	EditorSettings.set_setting("export/android/debug_keystore", keystore_path)
-	EditorSettings.set_setting("export/android/debug_keystore_user", "androiddebugkey")
-	EditorSettings.set_setting("export/android/debug_keystore_pass", "android")
-	EditorSettings.save()
+	var editor_settings := EditorInterface.get_editor_settings()
+	if editor_settings == null:
+		push_error("Não foi possível acessar EditorSettings.")
+		quit(1)
+		return
+
+	editor_settings.set_setting("export/android/android_sdk_path", sdk_path)
+	editor_settings.set_setting("export/android/java_sdk_path", java_path)
+	editor_settings.set_setting("export/android/debug_keystore", keystore_path)
+	editor_settings.set_setting("export/android/debug_keystore_user", "androiddebugkey")
+	editor_settings.set_setting("export/android/debug_keystore_pass", "android")
+	editor_settings.save()
 
 	print("Android export settings configuradas.")
 	print("SDK: %s" % sdk_path)
