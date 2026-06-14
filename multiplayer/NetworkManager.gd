@@ -24,11 +24,15 @@ const DEFAULT_ADDRESS := "127.0.0.1"
 const DEFAULT_PORT := 7000
 const DEFAULT_MAX_CLIENTS := 8
 const SERVER_PEER_ID := 1
+const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
 
 var connection_state := ConnectionState.OFFLINE
 
 
 func _ready() -> void:
+	if DEDICATED_SERVER_ARGUMENT in OS.get_cmdline_user_args():
+		return
+
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
