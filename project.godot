@@ -21,6 +21,7 @@ PlayerStatus="*res://status/player_status.gd"
 ItemActionTable="*res://item/item_action_table_autoload.gd"
 NetworkManager="*res://multiplayer/NetworkManager.gd"
 SessionProtocol="*res://multiplayer/SessionProtocol.gd"
+CharacterProtocol="*res://multiplayer/CharacterProtocol.gd"
 SpawnProtocol="*res://multiplayer/SpawnProtocol.gd"
 MovementProtocol="*res://multiplayer/MovementProtocol.gd"
 

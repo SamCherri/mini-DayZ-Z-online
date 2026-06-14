@@ -121,7 +121,8 @@ Um pacote Construct/Cordova de procedência incompatível foi descartado e não
 foi usado como fonte. O histórico dessa validação está registrado em
 [`docs/IMPORT_VALIDATION.md`](docs/IMPORT_VALIDATION.md).
 
-A estrutura headless e o protocolo inicial de spawn/despawn visual autorizado
-pelo servidor dedicado já foram adicionados. O próximo passo é validar esse
-fluxo com dois clientes reais e continuar a separação do servidor online, sem
-transformar o host local em arquitetura de produção.
+A estrutura headless e os protocolos temporários de sessão, personagem,
+spawn/despawn e movimento autorizado pelo servidor dedicado já foram
+adicionados. O próximo passo é validar esse fluxo com dois clientes reais e
+continuar a separação do servidor online, sem transformar o host local em
+arquitetura de produção.

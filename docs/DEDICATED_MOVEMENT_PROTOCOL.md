@@ -17,9 +17,9 @@ como autoload no mesmo caminho no cliente e no servidor dedicado.
    o jogador com `multiplayer.get_remote_sender_id()`.
 3. Direções não finitas são rejeitadas e direções com comprimento maior que
    um são normalizadas.
-4. `server/ServerMain.gd` exige a sessão temporária aceita, procura o peer,
-   calcula a nova posição com uma velocidade e passo temporários seguros e
-   atualiza `connected_peers`.
+4. `server/ServerMain.gd` exige a sessão e o personagem temporários aceitos,
+   procura o peer, calcula a nova posição com uma velocidade e passo
+   temporários seguros e atualiza `connected_peers`.
 5. O servidor envia `movement_snapshot(peer_id, position)` a todos os clientes.
 6. No cliente, o protocolo converte o snapshot em sinal local. O
    `WorldSpawner` encaminha o estado ao `SimpleAvatar` correto, e o
@@ -44,6 +44,8 @@ normal usa apenas os controles configurados em `project.godot`.
 Além de conexão, spawn e despawn, os logs devem conter:
 
 - `SessionProtocol: sessão aceita`: o movimento foi precedido pelo handshake;
+- `CharacterProtocol: personagem temporário aceito`: o movimento foi precedido
+  pela criação temporária do personagem;
 - `ServerMain: movimento do peer ... calculado`: o servidor recebeu a intenção
   e calculou a posição;
 - `MovementProtocol: snapshot recebido`: o cliente recebeu a posição decidida

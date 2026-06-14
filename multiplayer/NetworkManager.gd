@@ -28,6 +28,8 @@ const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
 const CONNECT_ARGUMENT := "--connect"
 const PORT_ARGUMENT := "--port"
 const TEST_NAME_ARGUMENT := "--test-name"
+const TEST_FIRST_NAME_ARGUMENT := "--test-first-name"
+const TEST_LAST_NAME_ARGUMENT := "--test-last-name"
 const MAX_PORT := 65535
 
 var connection_state := ConnectionState.OFFLINE
@@ -42,6 +44,7 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	SessionProtocol.session_accepted.connect(_on_session_accepted)
 	call_deferred("_start_from_command_line")
 
 
@@ -194,6 +197,32 @@ func _on_connected_to_server() -> void:
 	print("NetworkManager: solicitando sessão temporária como %s." % display_name)
 
 
+func _on_session_accepted(peer_id: int, _display_name: String) -> void:
+	if peer_id != multiplayer.get_unique_id():
+		return
+
+	var arguments := OS.get_cmdline_user_args()
+	var first_name := _read_text_argument(
+		arguments,
+		TEST_FIRST_NAME_ARGUMENT,
+		"Guest",
+	)
+	var last_name := _read_text_argument(
+		arguments,
+		TEST_LAST_NAME_ARGUMENT,
+		"Survivor",
+	)
+	CharacterProtocol.request_temporary_character.rpc_id(
+		SERVER_PEER_ID,
+		first_name,
+		last_name,
+	)
+	print(
+		"NetworkManager: solicitando personagem temporário como %s %s."
+		% [first_name, last_name]
+	)
+
+
 func _on_connection_failed() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	_set_connection_state(ConnectionState.OFFLINE)
@@ -221,3 +250,18 @@ func _read_test_name_argument(arguments: PackedStringArray) -> String:
 		return arguments[name_argument_index + 1]
 
 	return "Guest%d" % multiplayer.get_unique_id()
+
+
+func _read_text_argument(
+	arguments: PackedStringArray,
+	argument_name: String,
+	fallback: String,
+) -> String:
+	var argument_index := arguments.find(argument_name)
+	if (
+		argument_index != -1
+		and argument_index + 1 < arguments.size()
+		and not arguments[argument_index + 1].begins_with("--")
+	):
+		return arguments[argument_index + 1]
+	return fallback
