@@ -2,9 +2,9 @@ extends Node
 
 ## Ponto de entrada mínimo do servidor dedicado.
 ##
-## Esta fundação aceita conexões ENet, registra os peers ativos e distribui
-## eventos de spawn visual. Regras de gameplay, personagens, autenticação e
-## persistência continuam fora deste marco.
+## Esta fundação aceita conexões ENet, cria sessões temporárias em memória e
+## distribui eventos de spawn visual. Contas reais, personagens e persistência
+## continuam fora deste marco.
 
 const DEFAULT_PORT := 7000
 const DEFAULT_MAX_CLIENTS := 8
@@ -17,6 +17,7 @@ const MOVEMENT_SPEED := 90.0
 const MOVEMENT_STEP_SECONDS := 1.0 / 15.0
 
 var connected_peers: Dictionary = {}
+var sessions: Dictionary = {}
 var server_port := DEFAULT_PORT
 var max_clients := DEFAULT_MAX_CLIENTS
 
@@ -33,6 +34,7 @@ func _ready() -> void:
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	SessionProtocol.session_requested.connect(_on_session_requested)
 	MovementProtocol.movement_input_received.connect(_on_movement_input_received)
 
 	server_port = _read_positive_integer_argument(
@@ -100,19 +102,9 @@ func _read_positive_integer_argument(
 
 
 func _on_peer_connected(peer_id: int) -> void:
-	var existing_peer_ids := connected_peers.keys()
-	var spawn_position := _temporary_spawn_position(connected_peers.size())
 	connected_peers[peer_id] = {
 		"connected_at": Time.get_unix_time_from_system(),
-		"position": spawn_position,
 	}
-
-	for existing_peer_id: int in existing_peer_ids:
-		var existing_position: Vector2 = connected_peers[existing_peer_id]["position"]
-		SpawnProtocol.spawn_peer.rpc_id(peer_id, existing_peer_id, existing_position)
-		SpawnProtocol.spawn_peer.rpc_id(existing_peer_id, peer_id, spawn_position)
-
-	SpawnProtocol.spawn_peer.rpc_id(peer_id, peer_id, spawn_position)
 	print(
 		"ServerMain: peer %d conectado. Total conectado: %d."
 		% [peer_id, connected_peers.size()]
@@ -120,13 +112,48 @@ func _on_peer_connected(peer_id: int) -> void:
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
+	var had_session := sessions.erase(peer_id)
 	connected_peers.erase(peer_id)
-	for remaining_peer_id: int in connected_peers:
-		SpawnProtocol.despawn_peer.rpc_id(remaining_peer_id, peer_id)
+	if had_session:
+		for remaining_peer_id: int in sessions:
+			SpawnProtocol.despawn_peer.rpc_id(remaining_peer_id, peer_id)
 	print(
-		"ServerMain: peer %d desconectado. Total conectado: %d."
-		% [peer_id, connected_peers.size()]
+		"ServerMain: peer %d desconectado. Sessão removida: %s. Total conectado: %d."
+		% [peer_id, had_session, connected_peers.size()]
 	)
+
+
+func _on_session_requested(peer_id: int, display_name: String) -> void:
+	if not connected_peers.has(peer_id):
+		SessionProtocol.reject_session.rpc_id(peer_id, "Peer não conectado.")
+		return
+	if sessions.has(peer_id):
+		SessionProtocol.reject_session.rpc_id(peer_id, "Este peer já possui uma sessão.")
+		return
+
+	var spawn_position := _temporary_spawn_position(sessions.size())
+	sessions[peer_id] = {
+		"display_name": display_name,
+		"created_at": Time.get_unix_time_from_system(),
+	}
+	var peer_state: Dictionary = connected_peers[peer_id]
+	peer_state["position"] = spawn_position
+	connected_peers[peer_id] = peer_state
+
+	SessionProtocol.accept_session.rpc_id(peer_id, peer_id, display_name)
+	print(
+		"ServerMain: sessão criada para peer %d com nome %s."
+		% [peer_id, display_name]
+	)
+
+	for existing_peer_id: int in sessions:
+		if existing_peer_id == peer_id:
+			continue
+		var existing_position: Vector2 = connected_peers[existing_peer_id]["position"]
+		SpawnProtocol.spawn_peer.rpc_id(peer_id, existing_peer_id, existing_position)
+		SpawnProtocol.spawn_peer.rpc_id(existing_peer_id, peer_id, spawn_position)
+
+	SpawnProtocol.spawn_peer.rpc_id(peer_id, peer_id, spawn_position)
 
 
 func _on_movement_input_received(
@@ -134,8 +161,8 @@ func _on_movement_input_received(
 	direction: Vector2,
 	_sequence: int,
 ) -> void:
-	if not connected_peers.has(peer_id):
-		push_warning("ServerMain: input ignorado para peer %d não registrado." % peer_id)
+	if not sessions.has(peer_id):
+		push_warning("ServerMain: input ignorado para peer %d sem sessão." % peer_id)
 		return
 
 	var safe_direction := direction.limit_length(1.0)
@@ -148,7 +175,7 @@ func _on_movement_input_received(
 	peer_state["position"] = new_position
 	connected_peers[peer_id] = peer_state
 
-	for connected_peer_id: int in connected_peers:
+	for connected_peer_id: int in sessions:
 		MovementProtocol.movement_snapshot.rpc_id(
 			connected_peer_id,
 			peer_id,

@@ -94,18 +94,24 @@ wait_for_log "${SERVER_LOG}" "ServerMain: servidor dedicado iniciado"
 
 printf 'Iniciando cliente 1...\n'
 "${GODOT_BIN}" --headless --path . -- \
-	--connect 127.0.0.1 --port "${PORT}" --test-move >"${CLIENT_ONE_LOG}" 2>&1 &
+	--connect 127.0.0.1 --port "${PORT}" \
+	--test-name ClientOne --test-move >"${CLIENT_ONE_LOG}" 2>&1 &
 CLIENT_ONE_PID=$!
 wait_for_count "${SERVER_LOG}" "conectado. Total conectado:" 1
+wait_for_log "${CLIENT_ONE_LOG}" "SessionProtocol: sessão aceita"
+wait_for_log "${SERVER_LOG}" "ServerMain: sessão criada"
 wait_for_count "${CLIENT_ONE_LOG}" "SpawnProtocol: evento de spawn recebido" 1
 wait_for_log "${SERVER_LOG}" "ServerMain: movimento do peer"
 wait_for_log "${CLIENT_ONE_LOG}" "MovementProtocol: snapshot recebido"
 
 printf 'Iniciando cliente 2...\n'
 "${GODOT_BIN}" --headless --path . -- \
-	--connect 127.0.0.1 --port "${PORT}" >"${CLIENT_TWO_LOG}" 2>&1 &
+	--connect 127.0.0.1 --port "${PORT}" \
+	--test-name ClientTwo >"${CLIENT_TWO_LOG}" 2>&1 &
 CLIENT_TWO_PID=$!
 wait_for_count "${SERVER_LOG}" "conectado. Total conectado:" 2
+wait_for_log "${CLIENT_TWO_LOG}" "SessionProtocol: sessão aceita"
+wait_for_count "${SERVER_LOG}" "ServerMain: sessão criada" 2
 wait_for_count "${CLIENT_ONE_LOG}" "SpawnProtocol: evento de spawn recebido" 2
 wait_for_count "${CLIENT_TWO_LOG}" "SpawnProtocol: evento de spawn recebido" 2
 
@@ -114,7 +120,7 @@ kill -TERM "${CLIENT_ONE_PID}"
 wait "${CLIENT_ONE_PID}" 2>/dev/null || true
 CLIENT_ONE_PID=""
 
-wait_for_log "${SERVER_LOG}" "desconectado. Total conectado: 1."
+wait_for_log "${SERVER_LOG}" "Sessão removida: true. Total conectado: 1."
 wait_for_log "${CLIENT_TWO_LOG}" "SpawnProtocol: evento de despawn recebido"
 
 if ! kill -0 "${SERVER_PID}" 2>/dev/null || ! kill -0 "${CLIENT_TWO_PID}" 2>/dev/null; then
@@ -122,5 +128,5 @@ if ! kill -0 "${SERVER_PID}" 2>/dev/null || ! kill -0 "${CLIENT_TWO_PID}" 2>/dev
 	exit 1
 fi
 
-printf 'Smoke test concluído: servidor, dois clientes, spawn, movimento, desconexão e despawn validados.\n'
+printf 'Smoke test concluído: sessão, spawn, movimento, desconexão e despawn validados.\n'
 printf 'Logs disponíveis em %s\n' "${LOG_DIR}"

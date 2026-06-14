@@ -59,12 +59,14 @@ host local não será promovido a servidor de produção.
 - [x] Criar a estrutura inicial e a cena executável do servidor headless.
 - [x] Permitir configurar endereço e porta do servidor por argumentos no cliente.
 - [x] Criar o protocolo inicial de spawn/despawn visual autorizado pelo servidor.
+- [x] Criar sessão temporária em memória antes de liberar spawn e movimento.
 - [ ] Confirmar no CI conexão, spawn, movimento, desconexão e despawn com dois clientes.
 - [ ] Separar o processo servidor do APK cliente.
 - [ ] Implantar uma primeira instância acessível pela internet.
 - [ ] Fazer o servidor controlar posição, vida e inventário crítico.
 - [ ] Impedir que o cliente decida dano, loot raro ou teleporte.
-- [ ] Criar sessões, logs de conexão e tratamento de desconexão.
+- [ ] Evoluir a sessão temporária para sessão autenticada, com logs e tratamento
+  completo de reconexão.
 - [ ] Criar reinício e recuperação seguros.
 - [ ] Fazer dois clientes conectarem ao servidor externo, sem host de jogador.
 
@@ -147,11 +149,11 @@ vem depois que o fluxo online dedicado estiver funcional.
 
 ## Prioridade imediata
 
-1. Validar visualmente o spawn e movimento dedicado com dois clientes.
+1. Validar visualmente sessão, spawn e movimento dedicado com dois clientes.
 2. Evoluir o movimento sem promover o host local a servidor de produção.
 3. Separar e implantar o processo servidor fora do APK cliente.
 4. Conectar clientes ao servidor dedicado pela internet.
-5. Implementar login e personagem.
+5. Implementar cadastro/login real e personagem persistente.
 6. Implementar persistência PostgreSQL protegida pelo servidor.
 7. Implementar área de interesse.
 8. Avançar pelos testes de 2, 10, 20, 50 e 100 jogadores.

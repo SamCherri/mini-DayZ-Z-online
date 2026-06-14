@@ -27,6 +27,7 @@ const SERVER_PEER_ID := 1
 const DEDICATED_SERVER_ARGUMENT := "--dedicated-server"
 const CONNECT_ARGUMENT := "--connect"
 const PORT_ARGUMENT := "--port"
+const TEST_NAME_ARGUMENT := "--test-name"
 const MAX_PORT := 65535
 
 var connection_state := ConnectionState.OFFLINE
@@ -188,6 +189,9 @@ func _on_connected_to_server() -> void:
 	peer_connected.emit(SERVER_PEER_ID)
 	player_spawn_requested.emit(SERVER_PEER_ID)
 	player_spawn_requested.emit(multiplayer.get_unique_id())
+	var display_name := _read_test_name_argument(OS.get_cmdline_user_args())
+	SessionProtocol.request_session.rpc_id(SERVER_PEER_ID, display_name)
+	print("NetworkManager: solicitando sessão temporária como %s." % display_name)
 
 
 func _on_connection_failed() -> void:
@@ -205,3 +209,15 @@ func _on_server_disconnected() -> void:
 	_set_connection_state(ConnectionState.OFFLINE)
 	peer_disconnected.emit(SERVER_PEER_ID)
 	connection_failed.emit("O host encerrou a sessão.")
+
+
+func _read_test_name_argument(arguments: PackedStringArray) -> String:
+	var name_argument_index := arguments.find(TEST_NAME_ARGUMENT)
+	if (
+		name_argument_index != -1
+		and name_argument_index + 1 < arguments.size()
+		and not arguments[name_argument_index + 1].begins_with("--")
+	):
+		return arguments[name_argument_index + 1]
+
+	return "Guest%d" % multiplayer.get_unique_id()
