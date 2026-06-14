@@ -34,6 +34,9 @@ jobs:
             /usr/local/bin/godot
           godot --version
 
+      - name: Importar projeto Godot
+        run: godot --headless --path . --import --quit
+
       - name: Executar servidor e dois clientes headless
         run: ./scripts/smoke_test_dedicated_spawn.sh
 

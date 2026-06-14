@@ -104,8 +104,11 @@ LOG_DIR=/tmp/godot-smoke TIMEOUT_SECONDS=30 \
 ```
 
 O workflow `.github/workflows/godot-smoke-test.yml` baixa a versão oficial
-Godot 4.6 para Linux, executa o mesmo script em cada pull request e publica os
-três logs como artefato, inclusive quando o teste falha.
+Godot 4.6 para Linux, importa o projeto em modo headless, executa o mesmo script
+em cada pull request e publica os três logs como artefato, inclusive quando o
+teste falha. A cena principal e os autoloads críticos de inicialização usam
+caminhos `res://` explícitos no `project.godot`, evitando depender de um cache
+local para resolver UIDs em runners limpos.
 
 ### Como interpretar os logs
 
