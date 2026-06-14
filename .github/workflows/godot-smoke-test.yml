@@ -46,6 +46,7 @@ jobs:
         with:
           name: godot-dedicated-spawn-logs
           path: |
-            artifacts/godot-import/*.log
+            artifacts/godot-import/import.log
+            artifacts/godot-import/import.normalized.log
             artifacts/godot-smoke-test/*.log
           if-no-files-found: warn

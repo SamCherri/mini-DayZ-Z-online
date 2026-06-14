@@ -39,6 +39,13 @@ projeto com `scripts/import_godot_project.sh`, gera
 `minidayz-offline-debug.apk` e publica o artifact
 `minidayz-offline-debug-apk`.
 
+Durante a importação, o CI salva o log original e uma cópia normalizada, sem
+carriage returns e códigos ANSI, no artifact `godot-android-import-logs`.
+Crashes nativos ocorridos depois dos marcadores seguros
+`[ DONE ] reimport` ou `[ DONE ] loading_editor_layout` são tolerados. Se o
+Godot falhar antes de alcançar um desses marcadores, o workflow continua
+bloqueado para não exportar um projeto cuja importação esteja incompleta.
+
 ## Baixar o artifact no celular
 
 1. No navegador do celular, entre na mesma conta do GitHub que tem acesso ao

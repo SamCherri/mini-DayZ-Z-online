@@ -110,3 +110,13 @@ jobs:
           name: minidayz-offline-debug-apk
           path: exports/minidayz-offline-debug.apk
           if-no-files-found: error
+
+      - name: Publicar logs da importação Godot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-android-import-logs
+          path: |
+            artifacts/godot-import/import.log
+            artifacts/godot-import/import.normalized.log
+          if-no-files-found: warn
