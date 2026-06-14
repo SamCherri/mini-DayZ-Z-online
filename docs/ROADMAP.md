@@ -24,10 +24,10 @@
 
 ## Fase 2 — Multiplayer mínimo
 
-- [ ] Criar pasta `multiplayer/`.
-- [ ] Criar `NetworkManager.gd`.
-- [ ] Criar fluxo host/client para testes.
-- [ ] Sincronizar entrada e saída de jogadores.
+- [x] Criar pasta `multiplayer/`.
+- [x] Criar `NetworkManager.gd`.
+- [x] Criar fluxo host/client para testes.
+- [x] Preparar sinais de entrada e saída de jogadores.
 - [ ] Sincronizar posição básica.
 - [ ] Sincronizar animação básica.
 - [ ] Criar spawn points.
