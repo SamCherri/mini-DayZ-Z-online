@@ -96,8 +96,8 @@ jobs:
         run: ./scripts/import_godot_project.sh
 
       - name: Configurar export Android no Godot
-        timeout-minutes: 3
-        run: godot --headless --path . --script scripts/configure_android_export_settings.gd
+        timeout-minutes: 1
+        run: bash scripts/configure_android_export_settings.sh
 
       - name: Exportar APK Android debug offline
         shell: bash
