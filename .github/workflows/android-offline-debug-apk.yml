@@ -123,6 +123,12 @@ jobs:
             sed -n '1,240p' export_presets.cfg
           } 2>&1 | tee artifacts/android-export/preflight.log
 
+      - name: Ativar boot de diagnóstico somente no APK offline
+        shell: bash
+        run: |
+          bash scripts/android_export_preflight.sh
+          bash scripts/prepare_offline_debug_boot.sh
+
       - name: Exportar APK Android debug offline
         shell: bash
         run: |
