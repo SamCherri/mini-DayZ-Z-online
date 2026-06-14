@@ -34,6 +34,9 @@ jobs:
             /usr/local/bin/godot
           godot --version
 
+      - name: Diagnosticar tabelas CSV antes da importação
+        run: ./scripts/diagnose_data_csv_imports.sh
+
       - name: Importar projeto Godot
         run: ./scripts/import_godot_project.sh
 
@@ -46,6 +49,7 @@ jobs:
         with:
           name: godot-dedicated-spawn-logs
           path: |
+            artifacts/godot-import/csv-diagnostics.log
             artifacts/godot-import/import.log
             artifacts/godot-import/import.normalized.log
             artifacts/godot-smoke-test/*.log

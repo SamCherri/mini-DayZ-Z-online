@@ -13,32 +13,32 @@ enum ItemType {
 
 var dict := {
 	ItemType.SLOT_ITEM: {
-		'csv_dir': 'res://dev_res/data/背包物品.CSV',
+		'csv_dir': 'res://dev_res/data/背包物品.csv.txt',
 		'res_dir': 'res://item/res/slot_item/',
 		'resource_class': NumberItem.new()
 	},
 	ItemType.STATE_ITEM: {
-		'csv_dir': 'res://dev_res/data/状态物品.CSV',
+		'csv_dir': 'res://dev_res/data/状态物品.csv.txt',
 		'res_dir': 'res://item/res/state_item/',
 	'resource_class': StatusItemResource.new()
 },
 	ItemType.CRAFT: {
-		'csv_dir': 'res://dev_res/data/工具.CSV',
+		'csv_dir': 'res://dev_res/data/工具.csv.txt',
 		'res_dir': 'res://item/res/craft/',
 		'resource_class': DurabilityItemResource.new()
 	},
 	ItemType.MELEE_WEAPON: {
-		'csv_dir': 'res://dev_res/data/近战武器.CSV',
+		'csv_dir': 'res://dev_res/data/近战武器.csv.txt',
 		'res_dir': 'res://item/res/melee_weapon/',
 		'resource_class': MeleeWeaponResource.new()
 	},
 	ItemType.RANGED_WEAPON: {
-		'csv_dir': 'res://dev_res/data/远程武器.CSV',
+		'csv_dir': 'res://dev_res/data/远程武器.csv.txt',
 		'res_dir': 'res://item/res/ranged_weapon/',
 		'resource_class': RangedWeaponResource.new()
 	},
 	ItemType.GEAR: {
-		'csv_dir': 'res://dev_res/data/穿戴物品.CSV',
+		'csv_dir': 'res://dev_res/data/穿戴物品.csv.txt',
 		'res_dir': 'res://item/res/gear/',
 		'resource_class': GearResource.new()
 	}
