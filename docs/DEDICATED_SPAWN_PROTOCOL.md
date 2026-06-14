@@ -17,11 +17,13 @@ loot, status ou autoridade completa de movimento.
 cliente e servidor. Seus RPCs confiáveis aceitam chamadas remotas apenas da
 autoridade multiplayer, que no ENet do Godot é o peer servidor de ID `1`.
 
-Quando um peer conecta, `server/ServerMain.gd`:
+Quando um peer conecta, `server/ServerMain.gd` registra somente a conexão. Após
+o handshake descrito em
+[`DEDICATED_SESSION_PROTOCOL.md`](DEDICATED_SESSION_PROTOCOL.md), o servidor:
 
-1. registra em memória o horário e uma posição temporária;
-2. envia ao novo cliente os peers que já estavam conectados;
-3. anuncia o novo peer aos clientes existentes;
+1. registra em memória uma posição temporária;
+2. envia ao novo cliente os peers que já possuem sessão aceita;
+3. anuncia o novo peer aos clientes com sessão aceita;
 4. envia ao novo cliente o spawn dele mesmo.
 
 Quando um peer desconecta, o servidor o remove do registro e envia
@@ -81,6 +83,7 @@ automaticamente:
 
 - inicialização do servidor;
 - duas conexões registradas pelo servidor;
+- duas sessões temporárias aceitas;
 - eventos de spawn recebidos pelos dois clientes;
 - desconexão do primeiro cliente;
 - evento de despawn recebido pelo cliente restante.
@@ -114,6 +117,8 @@ local para resolver UIDs em runners limpos.
 
 - `ServerMain: servidor dedicado iniciado`: a porta ENet foi aberta;
 - `ServerMain: peer ... conectado`: um cliente alcançou o servidor;
+- `SessionProtocol: sessão aceita`: o handshake temporário foi aceito;
+- `ServerMain: sessão criada`: o servidor registrou a sessão em memória;
 - `SpawnProtocol: evento de spawn recebido`: o cliente recebeu uma autorização
   de representação visual enviada pelo servidor;
 - `ServerMain: peer ... desconectado`: o servidor percebeu a saída;
