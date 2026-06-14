@@ -8,7 +8,8 @@ Projeto de fã para criar uma versão **survival RP multiplayer para Android**, 
 
 Transformar uma base Godot 2D survival em um jogo mobile com foco em:
 
-- RP multiplayer online.
+- APK Android como cliente de um survival RP multiplayer online.
+- Servidor dedicado online, separado dos clientes e executado continuamente.
 - Sobrevivência zumbi em mapa aberto.
 - Criação de personagem com nome/sobrenome.
 - Sistema de fome, sede, doença, sangue e stamina.
@@ -16,7 +17,15 @@ Transformar uma base Godot 2D survival em um jogo mobile com foco em:
 - Chat local/global e comandos RP.
 - Facções, famílias, profissões e áreas seguras.
 - Servidor autoritativo para reduzir trapaças.
-- Exportação Android/APK.
+- Persistência online de contas e personagens.
+- Evolução progressiva de capacidade até a meta futura de 100 jogadores
+  simultâneos.
+
+O host local/ENet existente não representa o produto final. Ele é somente um
+**smoke test técnico inicial** para validar conexão, desconexão e os primeiros
+contratos de sincronização entre duas instâncias. A experiência final não
+dependerá de um jogador hospedando uma sessão por LAN: os APKs Android se
+conectarão pela internet a um servidor dedicado e autoritativo.
 
 ## Base técnica escolhida
 
@@ -36,17 +45,18 @@ Este projeto deve seguir uma rota segura:
 1. Usar a base técnica aberta como referência/derivação permitida pela licença.
 2. Preservar atribuição ao projeto original.
 3. Trocar nome, identidade visual, imagens, sons e marcas antes de qualquer publicação pública.
-4. Implementar multiplayer com arquitetura cliente-servidor.
-5. Adaptar sistemas para RP mobile.
+4. Usar o multiplayer local apenas para validar a fundação técnica.
+5. Implementar o servidor dedicado online e autoritativo.
+6. Adaptar sistemas para RP mobile e escalar a capacidade de forma medida.
 
 ## MVP inicial
 
 Primeira versão jogável:
 
 - Menu inicial.
-- Tela de nome e senha/conta local.
+- Tela de login em conta online.
 - Criação de personagem.
-- Entrada em servidor.
+- Entrada no servidor dedicado.
 - Spawn de jogador.
 - Sincronização básica de posição.
 - Chat local.
@@ -54,6 +64,11 @@ Primeira versão jogável:
 - Loot simples.
 - Inventário básico.
 - Exportação para Android.
+
+O MVP online começa com poucos jogadores para permitir validação segura. A
+capacidade será ampliada somente após testes de carga e correções de rede,
+servidor e persistência, seguindo os marcos de **2, 10, 20, 50 e, como objetivo
+futuro, 100 jogadores simultâneos**.
 
 ## Estrutura planejada
 
@@ -81,27 +96,32 @@ Prioridade para o Codex:
 3. Mapear cenas e scripts principais.
 4. Implementar camada de rede mínima.
 5. Criar servidor dedicado/headless.
-6. Criar login simples e spawn multiplayer.
-7. Testar exportação Android.
+6. Criar login, personagem e persistência no servidor.
+7. Implementar sincronização por área de interesse.
+8. Testar progressivamente 2, 10, 20, 50 e 100 jogadores.
+9. Testar exportação Android conectada ao servidor online.
 
 Veja também:
 
 - [`docs/ROADMAP.md`](docs/ROADMAP.md)
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/ONLINE_SERVER_ARCHITECTURE.md`](docs/ONLINE_SERVER_ARCHITECTURE.md)
 - [`docs/CODEX_TASKS.md`](docs/CODEX_TASKS.md)
 - [`ATTRIBUTION.md`](ATTRIBUTION.md)
 
 ## Status
 
-Repositório inicializado para planejamento e preparação da versão RP
-multiplayer. A auditoria preliminar confirmou que a referência pública declara
-Godot 4.6 e contém a cena `world.tscn`, mas a importação está bloqueada por
-HTTP 403 no ambiente atual.
+A base Godot pública já foi importada, e `world.tscn` já está configurada como
+cena principal do projeto. A fundação multiplayer ENet local também já foi
+adicionada para conexão host/client, sinais de sessão e sincronização inicial.
+Essa fundação continua sendo somente um smoke test técnico, não o servidor do
+produto final.
 
 Um pacote Construct/Cordova de procedência incompatível foi descartado e não
-foi usado como fonte. Consulte
-[`docs/IMPORT_VALIDATION.md`](docs/IMPORT_VALIDATION.md) para ver os testes,
-bloqueios e o procedimento seguro de continuação.
+foi usado como fonte. O histórico dessa validação está registrado em
+[`docs/IMPORT_VALIDATION.md`](docs/IMPORT_VALIDATION.md).
 
-Próximo passo: importar a árvore pública Godot em um ambiente com acesso ao
-GitHub, validar a execução offline e somente depois iniciar o multiplayer.
+O próximo passo é concluir o alinhamento da documentação e da arquitetura para
+o servidor dedicado online. Depois disso, o desenvolvimento deve avançar para
+o spawn visual seguro entre instâncias ou para a primeira estrutura de servidor
+headless, sem transformar o host local em arquitetura de produção.

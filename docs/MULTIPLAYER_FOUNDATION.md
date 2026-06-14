@@ -1,4 +1,10 @@
-# Fundação multiplayer local
+# Fundação multiplayer local — smoke test técnico
+
+> **Este documento não descreve a arquitetura final do produto.** O host ENet
+> local existe somente para validar a fundação de rede entre duas instâncias. O
+> objetivo final é um APK Android conectado pela internet a um servidor
+> dedicado e autoritativo, conforme
+> [`ONLINE_SERVER_ARCHITECTURE.md`](ONLINE_SERVER_ARCHITECTURE.md).
 
 ## Escopo desta etapa
 
@@ -12,6 +18,20 @@ Esta etapa adiciona somente a fundação de rede ENet do Godot:
 
 Nenhum sistema de inventário, zumbis, dano, loot, status, chat RP, asset ou
 identidade visual foi alterado.
+
+Também não estão presentes nesta etapa:
+
+- servidor dedicado/headless implantado online;
+- autenticação e contas;
+- personagens persistentes;
+- banco de dados de produção;
+- autoridade completa sobre gameplay;
+- sincronização por área de interesse;
+- capacidade validada além de duas instâncias.
+
+Portanto, sucesso neste teste não significa que o multiplayer online esteja
+pronto. Ele comprova apenas que os mecanismos mínimos de conexão podem ser
+exercitados antes da arquitetura dedicada.
 
 ## Mapeamento atual
 
@@ -100,7 +120,8 @@ Para testar entre dois computadores na mesma rede, substitua `127.0.0.1` pelo
 IP local do computador host e permita UDP na porta `7000` no firewall.
 
 O resultado esperado nesta etapa é a sessão e os sinais funcionarem. Ainda não
-é esperado ver dois personagens na tela.
+é esperado ver dois personagens na tela. Também não é esperado que este fluxo
+seja distribuído como forma de hospedagem do jogo.
 
 ## Próxima integração segura
 
@@ -112,4 +133,13 @@ Antes de spawn visual e movimento replicado:
 4. definir uma representação remota sem HUD e sem lógica de inventário local;
 5. conectar os sinais do `NetworkManager` a um spawner;
 6. anexar `PlayerSync` à representação multiplayer;
-7. validar o fluxo em duas instâncias antes de criar servidor dedicado.
+7. validar o fluxo em duas instâncias;
+8. encerrar a fase de host local e iniciar o servidor dedicado/headless;
+9. mover autoridade, sessão e estado do mundo para o processo de servidor;
+10. implementar login, personagem e persistência;
+11. introduzir área de interesse antes dos testes de maior escala.
+
+Depois disso, a capacidade deve ser validada progressivamente em **2, 10, 20,
+50 e 100 jogadores simultâneos**. O marco de 100 jogadores é uma meta futura,
+dependente de medição e otimização; não é uma promessa baseada no smoke test
+local.

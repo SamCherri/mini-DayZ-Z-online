@@ -1,12 +1,25 @@
 # Roadmap — Mini DayZ Z Online RP
 
+## Direção do produto
+
+O produto final será um **APK Android cliente** de survival RP online,
+conectado pela internet a um **servidor dedicado e autoritativo**. O fluxo
+host/client ENet em localhost ou LAN é apenas um smoke test técnico inicial; ele
+não é a experiência final, não substitui o servidor online e não deve receber
+responsabilidades definitivas de persistência ou autoridade.
+
+A meta futura é chegar a **100 jogadores simultâneos**, por evolução medida nos
+limites de **2, 10, 20, 50 e 100 jogadores**. Cada marco depende da estabilidade
+do anterior e de testes de carga, rede, banco e gameplay.
+
 ## Fase 0 — Preparação do repositório
 
 - [x] Criar README do projeto.
 - [x] Registrar atribuição e aviso de projeto de fã.
 - [x] Definir roadmap inicial.
 - [x] Definir arquitetura multiplayer.
-- [ ] Importar a base Godot de referência.
+- [x] Documentar a arquitetura alvo de servidor online dedicado.
+- [x] Importar a base Godot de referência.
 - [ ] Conferir licença e headers dos arquivos importados.
 - [ ] Rodar o projeto localmente no Godot.
 - [x] Auditar e rejeitar pacote Construct/Cordova de procedência incompatível.
@@ -20,32 +33,61 @@
 - [ ] Validar zumbis básicos.
 - [ ] Validar inventário e loot.
 - [ ] Validar status: fome, sede, sangue, stamina e doença.
-- [ ] Criar build Android offline.
+- [ ] Validar execução local para desenvolvimento, sem tratar o modo offline
+  como produto final.
 
-## Fase 2 — Multiplayer mínimo
+## Fase 2 — Smoke test local de rede (2 jogadores)
 
 - [x] Criar pasta `multiplayer/`.
 - [x] Criar `NetworkManager.gd`.
-- [x] Criar fluxo host/client para testes.
+- [x] Criar fluxo host/client ENet para testes.
 - [x] Preparar sinais de entrada e saída de jogadores.
 - [ ] Sincronizar posição básica.
 - [ ] Sincronizar animação básica.
-- [ ] Criar spawn points.
-- [ ] Testar 2 jogadores em LAN.
+- [ ] Criar spawn points temporários.
+- [ ] Testar duas instâncias em localhost ou LAN.
+- [ ] Registrar resultados e limitações do teste.
 
-## Fase 3 — Servidor dedicado
+**Saída da fase:** validar conexão, desconexão, spawn e contratos básicos. O
+host local não será promovido a servidor de produção.
 
-- [ ] Criar projeto/cena de servidor headless.
-- [ ] Servidor deve controlar posição, vida e inventário crítico.
-- [ ] Cliente não deve decidir dano, loot raro ou teleportes.
-- [ ] Criar logs de conexão.
-- [ ] Criar limite inicial de jogadores por sala.
-- [ ] Criar reinício seguro da sessão.
+## Fase 3 — Servidor dedicado online/headless
 
-## Fase 4 — RP básico
+- [ ] Criar projeto ou cena de servidor headless.
+- [ ] Separar o processo servidor do APK cliente.
+- [ ] Implantar uma primeira instância acessível pela internet.
+- [ ] Fazer o servidor controlar posição, vida e inventário crítico.
+- [ ] Impedir que o cliente decida dano, loot raro ou teleporte.
+- [ ] Criar sessões, logs de conexão e tratamento de desconexão.
+- [ ] Criar reinício e recuperação seguros.
+- [ ] Fazer dois clientes conectarem ao servidor externo, sem host de jogador.
 
-- [ ] Criar criação de personagem com nome e sobrenome.
-- [ ] Criar chat local.
+## Fase 4 — Login, conta e personagem
+
+- [ ] Criar cadastro e login de conta.
+- [ ] Armazenar senha somente por hash seguro.
+- [ ] Criar ID único de conta e personagem.
+- [ ] Criar personagem com nome e sobrenome.
+- [ ] Validar nome RP no servidor.
+- [ ] Associar personagem à conta autenticada.
+- [ ] Restaurar sessão e spawn após reconexão.
+
+## Fase 5 — Persistência online
+
+- [ ] Preparar banco PostgreSQL para o servidor dedicado.
+- [ ] Separar dados de conta, personagem, inventário e progressão.
+- [ ] Salvar posição, inventário e status pelo servidor.
+- [ ] Salvar profissão, facção e último acesso.
+- [ ] Proteger operações contra duplicação de itens.
+- [ ] Criar migrações, backup e procedimento de recuperação.
+- [ ] Garantir que o APK nunca acesse o banco diretamente.
+
+SQLite pode apoiar testes isolados, mas não é a arquitetura alvo da
+persistência compartilhada online.
+
+## Fase 6 — Gameplay RP online inicial
+
+- [ ] Criar chat local calculado por distância no servidor.
 - [ ] Criar chat global administrativo.
 - [ ] Criar comandos RP iniciais:
   - `/me`
@@ -56,28 +98,38 @@
 - [ ] Criar sistema de profissões.
 - [ ] Criar facções/famílias.
 - [ ] Criar zonas seguras.
+- [ ] Integrar zumbis, loot e inventário à autoridade do servidor.
 
-## Fase 5 — Persistência
+## Fase 7 — Sincronização por área de interesse e escala
 
-- [ ] Criar ID único de personagem.
-- [ ] Salvar posição.
-- [ ] Salvar inventário.
-- [ ] Salvar status.
-- [ ] Salvar profissão/facção.
-- [ ] Criar banco local inicial para testes.
-- [ ] Planejar banco online: SQLite/PostgreSQL/Supabase/Firebase.
+- [ ] Dividir o mapa em células, setores ou estrutura espacial equivalente.
+- [ ] Enviar a cada cliente somente entidades e eventos relevantes.
+- [ ] Definir frequências de atualização por distância e importância.
+- [ ] Medir CPU, memória, banda, latência e consultas ao banco.
+- [ ] Validar **2 jogadores** no servidor dedicado.
+- [ ] Validar **10 jogadores** com login e personagem persistente.
+- [ ] Validar **20 jogadores** com área de interesse ativa.
+- [ ] Validar **50 jogadores** com observabilidade e teste de carga.
+- [ ] Validar **100 jogadores** em teste prolongado como meta futura.
 
-## Fase 6 — Android online
+O número de vagas de produção nunca deve ser aumentado somente por estimativa.
+Cada limite depende de métricas, estabilidade e ausência de falhas críticas.
+
+## Fase 8 — APK Android conectado ao servidor
 
 - [ ] Ajustar interface para celular.
 - [ ] Criar botões touch.
-- [ ] Testar tela pequena.
-- [ ] Testar rede móvel instável.
-- [ ] Reduzir consumo de internet.
-- [ ] Criar APK de teste.
+- [ ] Testar telas e densidades diferentes.
+- [ ] Configurar endereço seguro do servidor por ambiente de build/deploy.
+- [ ] Testar internet móvel e Wi-Fi instável.
+- [ ] Reduzir consumo de dados e bateria.
+- [ ] Criar APK de teste conectado ao servidor dedicado.
 - [ ] Criar checklist de bugs antes de release.
 
-## Fase 7 — Identidade própria
+Esta documentação não autoriza gerar o APK nesta etapa atual; a build Android
+vem depois que o fluxo online dedicado estiver funcional.
+
+## Fase 9 — Identidade própria
 
 - [ ] Definir nome final do jogo.
 - [ ] Trocar logo.
@@ -89,12 +141,14 @@
 
 ## Prioridade imediata
 
-1. Importar a base Godot.
-2. Fazer rodar offline.
-3. Criar `NetworkManager.gd`.
-4. Testar dois jogadores em LAN.
-5. Só depois avançar para servidor online real.
-
-> A importação continua pendente porque o ambiente de execução retornou HTTP
-> 403 ao acessar o GitHub. Consulte
-> [`IMPORT_VALIDATION.md`](IMPORT_VALIDATION.md) antes de prosseguir.
+1. Concluir o alinhamento da documentação e da arquitetura online dedicada.
+2. Validar a execução real do projeto quando o Godot estiver instalado.
+3. Avançar para o spawn visual seguro entre duas instâncias ou iniciar a
+   estrutura do servidor dedicado/headless.
+4. Concluir o smoke test ENet sem promover o host local a servidor de produção.
+5. Conectar clientes ao servidor dedicado pela internet.
+6. Implementar login e personagem.
+7. Implementar persistência PostgreSQL protegida pelo servidor.
+8. Implementar área de interesse.
+9. Avançar pelos testes de 2, 10, 20, 50 e 100 jogadores.
+10. Somente então consolidar o APK Android online para testes de release.

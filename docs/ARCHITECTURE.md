@@ -2,17 +2,29 @@
 
 ## Visão geral
 
-O projeto deve ser tratado como um jogo Godot 2D survival com multiplayer online e foco em RP.
+O projeto deve ser tratado como um jogo Godot 2D survival com multiplayer
+online e foco em RP. O produto-alvo é um **APK Android cliente** conectado pela
+internet a um **servidor dedicado**, e não uma sessão hospedada por um jogador
+na rede local.
 
-A arquitetura recomendada é **cliente-servidor autoritativa**:
+A arquitetura alvo é **cliente-servidor autoritativa**:
 
 ```text
-Android Client 1  ┐
-Android Client 2  ├──> Dedicated Server ───> Database
-Android Client 3  ┘
+APK Android 1  ┐
+APK Android 2  ├──> Servidor dedicado autoritativo ───> Banco de dados
+APK Android N  ┘               │
+                               └──> Estado do mundo e área de interesse
 ```
 
-O cliente mostra o jogo, recebe input do jogador e renderiza o mundo. O servidor valida as ações importantes e distribui o estado para os outros jogadores.
+O cliente mostra o jogo, recebe input do jogador e renderiza o mundo. O
+servidor valida as ações importantes, mantém o estado válido da sessão e envia
+a cada cliente somente as atualizações relevantes para sua área de interesse.
+
+O ENet/host local atual é somente um **smoke test de fundação**. Ele serve para
+validar conexão, desconexão e contratos básicos entre duas instâncias, mas não
+define hospedagem, segurança, persistência ou escala do produto final. Consulte
+[`ONLINE_SERVER_ARCHITECTURE.md`](ONLINE_SERVER_ARCHITECTURE.md) para a
+arquitetura online detalhada.
 
 ## Por que servidor autoritativo?
 
@@ -120,31 +132,72 @@ Responsável por salvar:
 - Profissão/facção.
 - Último login.
 
+A persistência de produção deve ficar atrás do servidor dedicado. O APK nunca
+deve acessar o banco diretamente nem ser a fonte de verdade para inventário,
+posição, status ou propriedade de itens.
+
+### 6. Sincronização por área de interesse
+
+O servidor não deve transmitir todo o mundo para todos os jogadores. Ele deve:
+
+- dividir o mapa em células, setores ou outra estrutura espacial;
+- identificar jogadores, zumbis, loot e eventos próximos de cada cliente;
+- enviar entrada e saída de entidades da área de interesse;
+- usar frequências diferentes conforme distância e importância;
+- limitar mensagens globais aos sistemas que realmente exigem alcance global.
+
+Essa separação é necessária para reduzir tráfego, processamento e quantidade de
+entidades mantidas por cada APK, especialmente nos marcos de 20, 50 e 100
+jogadores.
+
 ## Rede
 
-### Primeira etapa
+### Smoke test inicial
 
 Usar a camada nativa de multiplayer do Godot para teste LAN/local.
 
-Objetivo inicial:
+Objetivo limitado desse teste:
 
 - 2 jogadores conectados.
 - Spawn separado.
 - Posição sincronizada.
 - Chat local funcionando.
 
-### Etapa online
+Esse host não é o servidor do produto e não deve acumular persistência ou
+regras definitivas. O resultado esperado é somente reduzir riscos técnicos
+antes da separação entre APK cliente e processo headless.
 
-Depois do teste LAN, evoluir para servidor dedicado.
+### Arquitetura online
 
-Opções futuras:
+Depois do smoke test, o caminho obrigatório é um servidor dedicado acessível
+pela internet:
 
-- Godot headless server.
-- Servidor VPS Linux.
-- Docker.
-- Banco PostgreSQL ou SQLite inicial.
+- processo Godot headless ou serviço de servidor compatível em Linux;
+- implantação em VPS, máquina virtual ou contêiner;
+- endpoint estável e configuração segura de portas;
+- regras autoritativas executadas no servidor;
+- PostgreSQL para contas, personagens e dados persistentes;
+- métricas, logs, backup e recuperação;
+- APK configurado como cliente, sem opção de ser o host de produção.
 
-## Persistência inicial
+SQLite pode ser usado somente em protótipos isolados ou testes automatizados.
+Ele não é a escolha alvo para a persistência compartilhada do servidor online.
+
+## Escala progressiva
+
+A meta futura é suportar até **100 jogadores simultâneos**, mas ela não deve ser
+tratada como capacidade garantida antes de testes. A evolução será validada em:
+
+1. **2 jogadores:** conexão, autoridade, spawn e sincronização básica;
+2. **10 jogadores:** sessão online inicial, login, personagem e estabilidade;
+3. **20 jogadores:** área de interesse, entidades e tráfego de rede;
+4. **50 jogadores:** carga do servidor, banco, observabilidade e recuperação;
+5. **100 jogadores:** otimização, teste prolongado e validação da meta futura.
+
+Cada limite só deve avançar quando o anterior estiver estável, mensurado e sem
+falhas críticas de duplicação, perda de dados ou autoridade.
+
+## Persistência online inicial
 
 Para MVP, começar simples:
 
@@ -163,6 +216,11 @@ faction
 job
 last_seen
 ```
+
+O esquema definitivo deve separar conta, personagem, inventário e demais
+domínios em estruturas consistentes. O exemplo acima representa apenas os dados
+mínimos que precisam ser considerados, não uma tabela única recomendada para
+produção.
 
 ## Sistemas RP principais
 
