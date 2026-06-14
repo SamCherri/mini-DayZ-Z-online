@@ -92,6 +92,9 @@ jobs:
               -dname "CN=Android Debug,O=Android,C=US"
           fi
 
+      - name: Configurar export Android no Godot
+        run: godot --headless --path . --script scripts/configure_android_export_settings.gd
+
       - name: Importar projeto Godot
         run: ./scripts/import_godot_project.sh
 
@@ -99,9 +102,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$(dirname "${APK_PATH}")"
+          mkdir -p "$(dirname "${APK_PATH}")" artifacts/android-export
           godot --headless --path . \
-            --export-debug "Android Offline Debug" "${APK_PATH}"
+            --verbose \
+            --export-debug "Android Offline Debug" "${APK_PATH}" \
+            2>&1 | tee artifacts/android-export/export.log
           test -s "${APK_PATH}"
 
       - name: Publicar APK offline debug
@@ -119,4 +124,12 @@ jobs:
           path: |
             artifacts/godot-import/import.log
             artifacts/godot-import/import.normalized.log
+          if-no-files-found: warn
+
+      - name: Publicar logs da exportação Android
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-android-export-logs
+          path: artifacts/android-export/*.log
           if-no-files-found: warn
