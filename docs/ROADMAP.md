@@ -9,6 +9,8 @@
 - [ ] Importar a base Godot de referência.
 - [ ] Conferir licença e headers dos arquivos importados.
 - [ ] Rodar o projeto localmente no Godot.
+- [x] Auditar e rejeitar pacote Construct/Cordova de procedência incompatível.
+- [x] Registrar a validação preliminar e os bloqueios do ambiente.
 
 ## Fase 1 — Base jogável offline
 
@@ -92,3 +94,7 @@
 3. Criar `NetworkManager.gd`.
 4. Testar dois jogadores em LAN.
 5. Só depois avançar para servidor online real.
+
+> A importação continua pendente porque o ambiente de execução retornou HTTP
+> 403 ao acessar o GitHub. Consulte
+> [`IMPORT_VALIDATION.md`](IMPORT_VALIDATION.md) antes de prosseguir.
