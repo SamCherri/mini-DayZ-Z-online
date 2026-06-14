@@ -119,3 +119,21 @@ O exemplo não é instalado nem ativado automaticamente por esta mudança.
 
 Uma VPS real, observabilidade, desligamento gracioso, recuperação, segurança,
 persistência e testes de carga serão etapas posteriores e separadas.
+
+## Importação no CI
+
+Antes do smoke test, o GitHub Actions executa
+`scripts/import_godot_project.sh`. O script guarda a saída completa em
+`artifacts/godot-import/import.log` e preserva o código real retornado pelo
+Godot.
+
+Em alguns ambientes Linux headless, o Godot pode exibir `[ DONE ] reimport` e
+depois abortar durante o encerramento com uma falha nativa, como
+`double free or corruption`. Nessa situação específica, o cache já terminou
+de ser gerado e o workflow continua com um aviso. Se o marcador de conclusão
+não estiver no log, a etapa falha com o código retornado pelo Godot.
+
+Essa tolerância não considera o projeto automaticamente válido. O smoke test
+runtime de servidor e dois clientes continua sendo a validação final de que o
+cache importado pode ser usado. Tanto o log de importação quanto os logs do
+runtime são publicados como artifacts do workflow.
